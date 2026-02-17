@@ -1,6 +1,6 @@
-# 🚀 LocalDev Hub
+# 🚀 DevControl
 
-**LocalDev Hub** é um dashboard "tudo-em-um" projetado para desenvolvedores gerenciarem seus projetos locais, tarefas do Azure DevOps, notas e automações em uma interface moderna e centralizada.
+**DevControl** é um dashboard "tudo-em-um" projetado para desenvolvedores gerenciarem seus projetos locais, tarefas do Azure DevOps, notas e automações em uma interface moderna e centralizada.
 
 Construído com **Angular 20** (Zoneless + Signals) e **Tailwind CSS**.
 
@@ -70,6 +70,25 @@ Este projeto foi gerado com Angular CLI.
 
 ---
 
+## 🚀 Como Executar (Electron)
+
+Para buildar o aplicativo Angular para o Electron e tentar iniciar o aplicativo Electron:
+
+1.  **Navegue para o diretório `app` e execute o build do Angular para Electron:**
+    ```bash
+    cd app
+    npm run build -- --configuration=electron
+    ```
+
+2.  **Tente iniciar o aplicativo Electron (após a instalação bem-sucedida das dependências do Electron):**
+    ```bash
+    cd app
+    npm run electron:start
+    ```
+    *   **Nota sobre o erro de certificado SSL:** Se você encontrar erros relacionados a "self-signed certificate in certificate chain" durante a instalação das dependências do Electron (`npm install` dentro do diretório `electron`), isso geralmente indica um problema com seu ambiente de rede (proxy corporativo ou inspeção SSL). Este ambiente automatizado não pode resolver diretamente essa questão. Você precisará configurar seu ambiente local para permitir o download seguro das dependências do Electron (por exemplo, configurando proxies npm, adicionando certificados raiz de confiança ou desabilitando temporariamente a verificação SSL em seu sistema, o que não é recomendado para ambientes de produção).
+
+---
+
 ## ⚙️ Configuração Inicial (Setup Wizard)
 
 Ao abrir o app pela primeira vez, um assistente guiará você por 3 etapas:
@@ -78,7 +97,7 @@ Ao abrir o app pela primeira vez, um assistente guiará você por 3 etapas:
 2. **Integrações**:
    - **Gemini API Key**: Necessário para funcionalidades de IA. (Obtenha no Google AI Studio).
    - **Azure DevOps**: Insira seu Token de Acesso Pessoal (PAT), Organização e Projeto.
-     - *Nota: Se não configurar, o app entrará em "Demo Mode" com dados fictícios.*
+     - *Nota: Se não configurar, o app entrará em "Demo Mode" com dados fictícios.* 
 3. **Segurança**: (Opcional) Defina uma senha para bloquear o app.
 
 ---
