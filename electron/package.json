@@ -3,9 +3,16 @@
   "version": "1.0.0",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "migrate:make": "npx knex --knexfile knexfile.js migrate:make",
+    "migrate:latest": "npx knex --knexfile knexfile.js migrate:latest",
+    "migrate:rollback": "npx knex --knexfile knexfile.js migrate:rollback"
   },
   "devDependencies": {
     "electron": "^31.7.7"
+  },
+  "dependencies": {
+    "knex": "^3.1.0",
+    "sqlite3": "^5.1.7"
   }
 }
