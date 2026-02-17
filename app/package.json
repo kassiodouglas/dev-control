@@ -1,0 +1,41 @@
+{
+  "name": "localdev-hub",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "ng serve",
+    "build": "ng build",
+    "preview": "ng serve --configuration=production",
+    "electron:build": "ng build --configuration=electron && cd ../electron && npm install",
+    "electron:start": "cd ../electron && npm start"
+  },
+  "dependencies": {
+    "@angular/build": "^20.3.6",
+    "@angular/cli": "^20.3.6",
+    "@angular/compiler-cli": "^20.3.6",
+    "@angular/core": "^20.3.6",
+    "@angular/compiler": "^20.3.6",
+    "@angular/platform-browser": "^20.3.6",
+    "@angular/common": "^20.3.6",
+    "@angular/forms": "^20.3.6",
+    "@google/genai": "latest",
+    "@types/jasmine": "~5.1.0",
+    "autoprefixer": "^10.4.21",
+    "commander": "^13.1.0",
+    "jasmine-core": "~5.6.0",
+    "karma": "~6.4.0",
+    "karma-chrome-launcher": "~3.2.0",
+    "karma-coverage": "~2.2.0",
+    "karma-jasmine": "~5.1.0",
+    "karma-jasmine-html-reporter": "~2.1.0",
+    "postcss": "^8.5.1",
+    "tailwindcss": "^3.4.17",
+    "typescript": "~5.9.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.14.0",
+    "typescript": "^5.9.0",
+    "vite": "^6.2.0"
+  }
+}
