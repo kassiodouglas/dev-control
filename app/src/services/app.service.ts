@@ -82,7 +82,7 @@ export type ViewMode = 'dashboard' | 'app-detail' | 'notes' | 'settings' | 'azur
   providedIn: 'root'
 })
 export class AppService {
-  private STORAGE_KEY = 'localdev_hub_data_v1';
+  private STORAGE_KEY = 'dev_control_hub_data_v1';
 
   // System State
   isConfigured = signal<boolean>(false); // Determines if Setup Wizard should run

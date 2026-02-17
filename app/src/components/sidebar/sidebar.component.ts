@@ -20,7 +20,7 @@ import { FormsModule } from '@angular/forms';
             <div class="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-bold shadow-md shadow-indigo-200 dark:shadow-none shrink-0">
               <i class="fa-solid fa-code"></i>
             </div>
-            <span class="font-bold text-lg text-zinc-800 dark:text-white tracking-tight whitespace-nowrap">LocalDev Hub</span>
+            <span class="font-bold text-lg text-zinc-800 dark:text-white tracking-tight whitespace-nowrap">DevControl</span>
           </div>
         } @else {
            <div (click)="goToDashboard()" class="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-bold shadow-md cursor-pointer hover:bg-indigo-700 transition-colors">

@@ -1,5 +1,5 @@
 {
-  "name": "LocalDev Hub",
+  "name": "DevControl",
   "description": "A comprehensive dashboard for managing local development applications, simulating git operations, command execution, and project notes.",
   "requestFramePermissions": []
 }

@@ -309,7 +309,7 @@ export class SettingsComponent {
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `localdev-backup-${new Date().toISOString().slice(0,10)}.json`;
+    a.download = `dev-control-backup-${new Date().toISOString().slice(0,10)}.json`;
     a.click();
     window.URL.revokeObjectURL(url);
   }
