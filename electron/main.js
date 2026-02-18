@@ -1,13 +1,13 @@
 const { app, BrowserWindow } = require("electron")
 const MainWindow = require("./Domains/Window/MainWindow")
 const db = require("./database/connection");
-const setupIpcHandlers = require("./ipc"); // Importar setupIpcHandlers
+const setupIpcHandlers = require("./ipc/index"); // Importar setupIpcHandlers
 
 app.whenReady().then(async () => {
   try {
     await db.migrate.latest();
     console.log("Migrations ran successfully!");
-    setupIpcHandlers(); // Inicializar IPC handlers
+    setupIpcHandlers();
   } catch (error) {
     console.error("Error running migrations:", error);
   }
