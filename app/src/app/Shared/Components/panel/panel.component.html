@@ -1,0 +1,18 @@
+<div class="panel-overlay" [class.show]="isOpen" (click)="close()" [class.dark]="themeService.theme() === 'dark'">
+  <div class="panel-container {{ size }} {{ position }}" (click)="$event.stopPropagation()">
+    <button class="close-button" (click)="close()">
+        <span class="material-icons">close</span>
+    </button>
+    <div class="panel-body">
+        <div class="panel-title">
+            <ng-content select="[title]"></ng-content>
+        </div>
+        <div class="panel-subtitle">
+            <ng-content select="[subtitle]"></ng-content>
+        </div>
+        <div class="panel-actions">
+            <ng-content select="[actions]"></ng-content>
+        </div>
+    </div>
+  </div>
+</div>

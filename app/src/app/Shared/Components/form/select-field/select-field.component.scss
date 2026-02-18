@@ -1,0 +1,106 @@
+:host {
+  display: block;
+
+  ::ng-deep .custom-field-modern {
+
+    // Remove default background
+    .mdc-text-field {
+      background-color: transparent !important;
+    }
+
+    // Default Border Colors (Gray-300)
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__notch,
+    .mdc-notched-outline__trailing {
+      border-color: #d1d5db !important;
+      transition: border-color 0.2s;
+    }
+
+    // Input Text Color (and Select Value)
+    .mat-mdc-select-value {
+      color: #1f2937 !important; /* gray-800 */
+    }
+
+    .mat-mdc-select-arrow {
+       color: #6b7280 !important; /* gray-500 */
+    }
+
+    // Focus State
+    &.mat-focused {
+      .mdc-notched-outline__leading,
+      .mdc-notched-outline__notch,
+      .mdc-notched-outline__trailing {
+        border-color: #7f50cc !important; /* primary-600 */
+        border-width: 2px !important;
+      }
+
+      .mat-mdc-floating-label {
+        color: #7f50cc !important;
+      }
+
+      .mat-mdc-select-arrow {
+        color: #7f50cc !important;
+      }
+    }
+
+    // Error State
+    &.mat-form-field-invalid {
+      .mdc-notched-outline__leading,
+      .mdc-notched-outline__notch,
+      .mdc-notched-outline__trailing {
+        border-color: #dc2626 !important; /* red-600 */
+      }
+
+      .mat-mdc-floating-label {
+        color: #dc2626 !important;
+      }
+    }
+  }
+}
+
+// Dark Mode Overrides
+:host-context(html.dark) {
+  ::ng-deep .custom-field-modern {
+
+    // Default Border Colors Dark (Gray-600)
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__notch,
+    .mdc-notched-outline__trailing {
+      border-color: #4b5563 !important;
+    }
+
+    // Input Text Color Dark
+    .mat-mdc-select-value {
+      color: #f3f4f6 !important; /* gray-100 */
+    }
+
+    .mat-mdc-select-arrow {
+      color: #9ca3af !important; /* gray-400 */
+    }
+
+    .mat-mdc-select-placeholder {
+       color: #9ca3af !important; /* gray-400 */
+    }
+
+    .mat-mdc-floating-label {
+      color: #9ca3af !important; /* gray-400 */
+    }
+
+    // Focus State Dark
+    &.mat-focused {
+      .mdc-notched-outline__leading,
+      .mdc-notched-outline__notch,
+      .mdc-notched-outline__trailing {
+        border-color: #a78bfa !important; /* primary-400 */
+      }
+
+      .mat-mdc-floating-label {
+        color: #a78bfa !important;
+      }
+
+      .mat-mdc-select-arrow {
+        color: #a78bfa !important;
+      }
+    }
+  }
+}

@@ -1,0 +1,108 @@
+
+<comp-page-header title="Page Header" [breadcrumbs]="breadcrumbs"></comp-page-header>
+
+<div class="p-4">
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">Visão Geral</h2>
+    </div>
+    <div class="card-body">
+      <p>O componente <code>comp-page-header</code> é usado para criar um cabeçalho de página padronizado, incluindo título, subtítulo e breadcrumbs para navegação.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">Exemplo de Uso</h2>
+    </div>
+    <div class="card-body">
+      <comp-page-header
+        title="Configurações"
+        subtitle="Gerencie as configurações da sua conta"
+        [breadcrumbs]="exampleBreadcrumbs"
+      ></comp-page-header>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">Código</h2>
+    </div>
+    <div class="card-body">
+      <h3 class="text-lg font-semibold">HTML</h3>
+      <div class="code-toolbar">
+        <pre><code class="language-html">
+<comp-page-header
+  title="Configurações"
+  subtitle="Gerencie as configurações da sua conta"
+  [breadcrumbs]="exampleBreadcrumbs"
+></comp-page-header>
+        </code></pre>
+        <button class="copy-button" (click)="copyToClipboard('html')">
+          <span class="material-icons">content_copy</span>
+        </button>
+      </div>
+
+      <h3 class="mt-4 text-lg font-semibold">TypeScript</h3>
+      <div class="code-toolbar">
+        <pre><code class="language-typescript">
+import &#123; Component &#125; from '@angular/core';
+import &#123; BreadcrumbItem &#125; from '...'; // Importe a interface
+
+@Component(&#123;
+  selector: 'app-sua-pagina',
+  // ...
+&#125;)
+export class SuaPaginaComponent &#123;
+  exampleBreadcrumbs: BreadcrumbItem[] = [
+    &#123; label: 'Home', url: '/' &#125;,
+    &#123; label: 'Configurações' &#125;,
+  ];
+&#125;
+        </code></pre>
+        <button class="copy-button" (click)="copyToClipboard('ts')">
+          <span class="material-icons">content_copy</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">API do Componente</h2>
+    </div>
+    <div class="card-body">
+      <h3 class="text-lg font-semibold">Inputs</h3>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Tipo</th>
+            <th>Padrão</th>
+            <th>Descrição</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>title</code></td>
+            <td><code>string</code></td>
+            <td><code>''</code></td>
+            <td>O título principal do cabeçalho.</td>
+          </tr>
+          <tr>
+            <td><code>subtitle</code></td>
+            <td><code>string</code></td>
+            <td><code>''</code></td>
+            <td>O subtítulo opcional exibido abaixo do título.</td>
+          </tr>
+          <tr>
+            <td><code>breadcrumbs</code></td>
+            <td><code>BreadcrumbItem[]</code></td>
+            <td><code>[]</code></td>
+            <td>Uma lista de objetos <code>BreadcrumbItem</code> para exibir a navegação.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

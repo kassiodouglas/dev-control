@@ -1,0 +1,24 @@
+<h1>Primary Button Component</h1>
+<p>O componente de botão primário é usado para ações principais em uma página.</p>
+
+<h2>Uso</h2>
+<p>Para usar o componente de botão primário, basta adicionar o seletor `comp-primary-button` ao seu template.</p>
+
+<h3>Exemplo:</h3>
+<pre>
+<code>
+<comp-primary-button>Clique Aqui</comp-primary-button>
+
+<comp-primary-button [isLoading]="true">Carregando...</comp-primary-button>
+
+<comp-primary-button [disabled]="true">Desabilitado</comp-primary-button>
+</code>
+</pre>
+
+<h2>Inputs</h2>
+<ul>
+  <li><code>isLoading</code> (boolean): Se o botão está em estado de carregamento. O padrão é `false`.</li>
+  <li><code>disabled</code> (boolean): Se o botão está desabilitado. O padrão é `false`.</li>
+  <li><code>type</code> ('button' | 'submit' | 'reset'): O tipo do botão. O padrão é `'button'`.</li>
+  <li><code>loadingText</code> (string): O texto a ser exibido quando o botão está em estado de carregamento. O padrão é `'Aguarde...'`.</li>
+</ul>

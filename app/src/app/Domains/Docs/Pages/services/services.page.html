@@ -1,0 +1,16 @@
+<div class="p-8">
+  <a routerLink="/docs" class="text-blue-500 hover:underline mb-6 block">&larr; Back to Docs</a>
+
+  <h1 class="text-3xl font-bold mb-6">Service Demonstrations</h1>
+
+  <!-- ThemeService -->
+  <div class="mb-8">
+    <h2 class="text-2xl font-semibold mb-4">Theme Service</h2>
+    <div class="flex flex-col gap-4">
+      <p>Current theme: <span class="font-mono p-1 rounded">{{ themeService.theme() }}</span></p>
+      <div>
+        <comp-primary-button (click)="toggleTheme()">Toggle Theme</comp-primary-button>
+      </div>
+    </div>
+  </div>
+</div>

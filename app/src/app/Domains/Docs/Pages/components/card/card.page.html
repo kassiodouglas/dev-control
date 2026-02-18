@@ -1,0 +1,110 @@
+
+<comp-page-header title="Card" [breadcrumbs]="breadcrumbs"></comp-page-header>
+
+<div class="p-4">
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">Visão Geral</h2>
+    </div>
+    <div class="card-body">
+      <p>O <code>comp-card</code> é um componente versátil para exibir conteúdo em um contêiner estilizado. Ele suporta a projeção de conteúdo para o cabeçalho, corpo e rodapé, permitindo uma grande flexibilidade no layout.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">Exemplo de Uso</h2>
+    </div>
+    <div class="card-body">
+      <comp-card>
+        <div header>
+          <h3 class="text-lg font-semibold">Título do Card</h3>
+        </div>
+        <div body>
+          <p>Este é o conteúdo principal do card. Você pode colocar qualquer HTML aqui.</p>
+        </div>
+        <div footer>
+          <button class="btn btn-primary">Ação do Rodapé</button>
+        </div>
+      </comp-card>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">Código</h2>
+    </div>
+    <div class="card-body">
+      <h3 class="text-lg font-semibold">HTML</h3>
+      <div class="code-toolbar">
+        <pre><code class="language-html">
+<comp-card>
+  <div header>
+    <h3 class="text-lg font-semibold">Título do Card</h3>
+  </div>
+  <div body>
+    <p>Este é o conteúdo principal do card. Você pode colocar qualquer HTML aqui.</p>
+  </div>
+  <div footer>
+    <button class="btn btn-primary">Ação do Rodapé</button>
+  </div>
+</comp-card>
+        </code></pre>
+        <button class="copy-button" (click)="copyToClipboard()">
+          <span class="material-icons">content_copy</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">API do Componente</h2>
+    </div>
+    <div class="card-body">
+      <h3 class="text-lg font-semibold">Inputs</h3>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Tipo</th>
+            <th>Padrão</th>
+            <th>Descrição</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>customClass</code></td>
+            <td><code>string</code></td>
+            <td><code>''</code></td>
+            <td>Classes CSS customizadas para aplicar ao contêiner principal do card.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 class="mt-4 text-lg font-semibold">Slots de Conteúdo (Content Projection)</h3>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Seletor</th>
+            <th>Descrição</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>[header]</code></td>
+            <td>Projeta o conteúdo no cabeçalho do card.</td>
+          </tr>
+          <tr>
+            <td><code>[body]</code></td>
+            <td>Projeta o conteúdo no corpo do card.</td>
+          </tr>
+          <tr>
+            <td><code>[footer]</code></td>
+            <td>Projeta o conteúdo no rodapé do card.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

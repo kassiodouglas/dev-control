@@ -1,25 +1,47 @@
 {
-  "name": "dev-control",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
+  "name": "gestor-cotacoes-b2b",
+  "version": "0.0.1",
   "scripts": {
-    "dev": "ng serve",
-    "build": "ng build",
-    "preview": "ng serve --configuration=production",
-    "electron:build": "ng build --configuration=electron && cd ../electron && npm install",
-    "electron:start": "cd ../electron && npm start"
+    "serve:dev": "ng serve --configuration development --host 0.0.0.0  --port 8001",
+    "build:test": "ng build --configuration test && cp .htaccess dist/test/browser/.htacces",
+    "build:prod": "ng build --configuration production && cp .htaccess dist/production/browser/.htacces",
+    "build:deploy": "node cli/build-versioned.js",
+    "build:all": "npm run build:test && npm run build:prod",
+    "make:domain": "node cli/make-domain.js",
+    "make:domain:file": "node cli/make-domain-file.js",
+    "md": "npm run make:domain",
+    "mdf": "npm run make:domain:file",
+    "cli": "node cli/index.js"
   },
+  "private": true,
   "dependencies": {
+    "@angular/cdk": "^20.2.9",
+    "@angular/common": "^20.3.6",
+    "@angular/compiler": "^20.3.6",
+    "@angular/core": "^20.3.6",
+    "@angular/forms": "^20.3.6",
+    "@angular/material": "^20.2.9",
+    "@angular/platform-browser": "^20.3.6",
+    "@angular/platform-browser-dynamic": "^20.3.6",
+    "@angular/router": "^20.3.6",
+    "@types/leaflet": "^1.9.21",
+    "animate.css": "^4.1.1",
+    "apexcharts": "^5.3.6",
+    "highlight.js": "^11.11.1",
+    "highlight.run": "^9.22.3",
+    "leaflet": "^1.9.4",
+    "ng-apexcharts": "^2.0.4",
+    "ngx-highlightjs": "^14.0.1",
+    "ngx-mask": "^20.0.3",
+    "notiflix": "^3.2.8",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.3.0",
+    "zone.js": "~0.15.0"
+  },
+  "devDependencies": {
     "@angular/build": "^20.3.6",
     "@angular/cli": "^20.3.6",
     "@angular/compiler-cli": "^20.3.6",
-    "@angular/core": "^20.3.6",
-    "@angular/compiler": "^20.3.6",
-    "@angular/platform-browser": "^20.3.6",
-    "@angular/common": "^20.3.6",
-    "@angular/forms": "^20.3.6",
-    "@google/genai": "latest",
     "@types/jasmine": "~5.1.0",
     "autoprefixer": "^10.4.21",
     "commander": "^13.1.0",
@@ -32,10 +54,5 @@
     "postcss": "^8.5.1",
     "tailwindcss": "^3.4.17",
     "typescript": "~5.9.3"
-  },
-  "devDependencies": {
-    "@types/node": "^22.14.0",
-    "typescript": "^5.9.0",
-    "vite": "^6.2.0"
   }
 }

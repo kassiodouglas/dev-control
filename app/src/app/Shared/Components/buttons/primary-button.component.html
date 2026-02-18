@@ -1,0 +1,14 @@
+<button mat-flat-button 
+        color="primary" 
+        [disabled]="disabled || isLoading" 
+        [type]="type"
+        class="w-full py-3 mt-2 text-lg font-semibold shadow-xl rounded-xl shadow-primary-200/50 dark:shadow-none hover:scale-[1.02] transition-transform duration-200 disabled:opacity-70 disabled:hover:scale-100">
+  @if (isLoading) {
+    <div class="flex items-center justify-center gap-2">
+      <mat-icon class="animate-spin">autorenew</mat-icon>
+      <span>{{ loadingText }}</span>
+    </div>
+  } @else {
+    <ng-content></ng-content>
+  }
+</button>

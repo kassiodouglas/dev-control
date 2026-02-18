@@ -1,0 +1,66 @@
+<div class="relative w-64 h-full bg-white shadow-md dark:bg-gray-800">
+  <div>
+    <div class="p-4">
+      <h2 class="text-xl font-bold dark:text-white">Documentation</h2>
+    </div>
+    <nav class="mt-4">
+      <ul>
+        <li>
+          <a routerLink="/docs" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="block px-4 py-2 text-gray-700 hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-700">Home</a>
+        </li>
+        <li>
+          <a routerLink="/docs/components" routerLinkActive="active" class="block px-4 py-2 text-gray-700 hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-700">Components</a>
+          <ul class="ml-4">
+            <li>
+              <a routerLink="/docs/components/buttons/primary-button" routerLinkActive="active" class="block px-4 py-2 text-gray-700 hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-700">Primary Button</a>
+            </li>
+            <li>
+              <a routerLink="/docs/components/card" routerLinkActive="active" class="block px-4 py-2 text-gray-700 hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-700">Card</a>
+            </li>
+            <li>
+              <a routerLink="/docs/components/form/input-field" routerLinkActive="active" class="block px-4 py-2 text-gray-700 hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-700">Input Field</a>
+            </li>
+            <li>
+              <a routerLink="/docs/components/form/all-fields" routerLinkActive="active" class="block px-4 py-2 text-gray-700 hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-700">All Form Fields</a>
+            </li>
+            <li>
+              <a routerLink="/docs/components/modal" routerLinkActive="active" class="block px-4 py-2 text-gray-700 hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-700">Modal</a>
+            </li>
+            <li>
+              <a routerLink="/docs/components/breadcrumb" routerLinkActive="active" class="block px-4 py-2 text-gray-700 hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-700">Breadcrumb</a>
+            </li>
+            <li>
+              <a routerLink="/docs/components/page-header" routerLinkActive="active" class="block px-4 py-2 text-gray-700 hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-700">Page Header</a>
+            </li>
+            <li>
+              <a routerLink="/docs/components/panel" routerLinkActive="active" class="block px-4 py-2 text-gray-700 hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-700">Panel</a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a routerLink="/docs/services" routerLinkActive="active" class="block px-4 py-2 text-gray-700 hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-700">Services</a>
+          <ul class="ml-4">
+            <li>
+              <a routerLink="/docs/services/notification" routerLinkActive="active" class="block px-4 py-2 text-gray-700 hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-700">Notification</a>
+            </li>
+            <li>
+              <a routerLink="/docs/services/block" routerLinkActive="active" class="block px-4 py-2 text-gray-700 hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-700">Block</a>
+            </li>
+            <li>
+              <a routerLink="/docs/services/loading" routerLinkActive="active" class="block px-4 py-2 text-gray-700 hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-700">Loading</a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a routerLink="/docs/playground" routerLinkActive="active" class="block px-4 py-2 text-gray-700 hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-700">Playground</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="absolute bottom-0 w-full p-4">
+    <a routerLink="/" class="block px-4 py-2 text-center text-gray-700 border border-gray-300 rounded-md hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-700 dark:border-gray-600">
+      Voltar para Home
+    </a>
+  </div>
+</div>

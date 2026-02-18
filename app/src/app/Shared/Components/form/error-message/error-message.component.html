@@ -1,0 +1,7 @@
+@if (control && control.invalid && control.touched) {
+  <div class="ml-1 text-xs text-red-600 dark:text-red-400 animate-fade-in">
+    @for (error of errors; track error) {
+      <span>{{ error }}</span>
+    }
+  </div>
+}

@@ -1,0 +1,173 @@
+
+<comp-page-header title="Modal" [breadcrumbs]="breadcrumbs"></comp-page-header>
+
+<div class="p-4">
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">Visão Geral</h2>
+    </div>
+    <div class="card-body">
+      <p>O <code>app-modal</code> é um componente para exibir conteúdo em uma camada sobre a aplicação. Ele é controlado pelo <code>ModalService</code>, que gerencia sua visibilidade (abrir/fechar).</p>
+      <p>O componente utiliza projeção de conteúdo para o título, subtítulo, corpo e ações, oferecendo flexibilidade para diferentes casos de uso.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">Exemplo Básico</h2>
+    </div>
+    <div class="card-body">
+      <button class="btn btn-primary" (click)="openModal('basic-modal')">Abrir Modal Básico</button>
+      <app-modal id="basic-modal">
+        <div title>Título do Modal</div>
+        <div subtitle>Este é o subtítulo do modal.</div>
+        <p>Este é o corpo principal do modal. Você pode adicionar qualquer conteúdo HTML aqui.</p>
+        <div actions>
+          <button class="btn btn-primary" (click)="closeModal('basic-modal')">Fechar</button>
+        </div>
+      </app-modal>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">Exemplo de Feedback</h2>
+    </div>
+    <div class="card-body">
+      <button class="btn btn-secondary" (click)="openModal('feedback-modal')">Abrir Modal de Feedback</button>
+      <app-modal id="feedback-modal" size="sm">
+        <div title>Como você avalia esta informação?</div>
+        <div subtitle>Seu feedback nos ajuda a melhorar o conteúdo para você.</div>
+        <div actions class="flex justify-center space-x-4">
+          <button class="btn btn-icon">
+            <span class="material-icons">sentiment_satisfied_alt</span>
+            Muito útil
+          </button>
+          <button class="btn btn-icon">
+            <span class="material-icons">sentiment_dissatisfied</span>
+            Não foi útil
+          </button>
+        </div>
+      </app-modal>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">Código</h2>
+    </div>
+    <div class="card-body">
+      <h3 class="text-lg font-semibold">HTML</h3>
+      <div class="code-toolbar">
+        <pre><code class="language-html">
+<!-- Botão para acionar o modal -->
+<button class="btn btn-primary" (click)="openModal('basic-modal')">Abrir Modal</button>
+
+<!-- Estrutura do Modal -->
+<app-modal id="basic-modal">
+  <div title>Título do Modal</div>
+  <div subtitle>Este é o subtítulo do modal.</div>
+
+  <p>Corpo do modal...</p>
+
+  <div actions>
+    <button class="btn" (click)="closeModal('basic-modal')">Cancelar</button>
+    <button class="btn btn-primary" (click)="closeModal('basic-modal')">Confirmar</button>
+  </div>
+</app-modal>
+        </code></pre>
+        <button class="copy-button" (click)="copyToClipboard('html')">
+          <span class="material-icons">content_copy</span>
+        </button>
+      </div>
+
+      <h3 class="mt-4 text-lg font-semibold">TypeScript</h3>
+      <div class="code-toolbar">
+        <pre><code class="language-typescript">
+import &#123; Component, inject &#125; from '@angular/core';
+import &#123; ModalService &#125; from '@shared/Components/modal/Services/modal.service';
+
+@Component(&#123;
+  selector: 'app-sua-pagina',
+  // ...
+&#125;)
+export class SuaPaginaComponent &#123;
+  private modalService = inject(ModalService);
+
+  openModal(id: string) &#123;
+    this.modalService.open(id);
+  &#125;
+
+  closeModal(id: string) &#123;
+    this.modalService.close(id);
+  &#125;
+&#125;
+        </code></pre>
+        <button class="copy-button" (click)="copyToClipboard('ts')">
+          <span class="material-icons">content_copy</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">API do Componente</h2>
+    </div>
+    <div class="card-body">
+      <h3 class="text-lg font-semibold">Inputs</h3>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Tipo</th>
+            <th>Padrão</th>
+            <th>Descrição</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>id</code></td>
+            <td><code>string</code></td>
+            <td>-</td>
+            <td><strong>(Obrigatório)</strong> Um identificador único para o modal.</td>
+          </tr>
+          <tr>
+            <td><code>size</code></td>
+            <td><code>'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'full'</code></td>
+            <td><code>'md'</code></td>
+            <td>Define a largura máxima do modal.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 class="mt-4 text-lg font-semibold">Slots de Conteúdo (Content Projection)</h3>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Seletor</th>
+            <th>Descrição</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>[title]</code></td>
+            <td>Projeta o conteúdo no título do modal.</td>
+          </tr>
+          <tr>
+            <td><code>[subtitle]</code></td>
+            <td>Projeta o conteúdo no subtítulo do modal.</td>
+          </tr>
+          <tr>
+            <td><code>[actions]</code></td>
+            <td>Projeta o conteúdo na área de ações (rodapé) do modal.</td>
+          </tr>
+          <tr>
+            <td><em>(default)</em></td>
+            <td>Qualquer conteúdo sem um seletor específico é projetado no corpo do modal.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

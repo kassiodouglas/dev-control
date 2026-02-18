@@ -1,0 +1,88 @@
+
+<comp-page-header title="Loading Service" [breadcrumbs]="breadcrumbs"></comp-page-header>
+
+<div class="p-4">
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">Visão Geral</h2>
+    </div>
+    <div class="card-body">
+      <p>O <code>LoadingService</code> é um serviço global para exibir um indicador de carregamento (spinner) em tela cheia. É ideal para operações que bloqueiam a interação do usuário com toda a aplicação, como o carregamento inicial de dados ou transições de página.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">Exemplo de Uso</h2>
+    </div>
+    <div class="card-body">
+      <button class="btn btn-primary" (click)="showLoading()">Exibir Loading (2s)</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">Código</h2>
+    </div>
+    <div class="card-body">
+      <h3 class="text-lg font-semibold">TypeScript</h3>
+      <div class="code-toolbar">
+        <pre><code class="language-typescript">
+import &#123; Component, inject &#125; from '@angular/core';
+import &#123; LoadingService &#125; from 'src/app/Shared/Services/loading.service';
+
+@Component(&#123;
+  selector: 'app-sua-pagina',
+  template: `<button class="btn btn-primary" (click)="showLoading()">Exibir Loading (2s)</button>`
+&#125;)
+export class SuaPaginaComponent &#123;
+  private loadingService = inject(LoadingService);
+
+  showLoading() &#123;
+    // Exibe o loading com uma mensagem
+    this.loadingService.show('Carregando dados...');
+
+    // Esconde o loading após 2 segundos
+    setTimeout(() => &#123;
+      this.loadingService.hide();
+    &#125;, 2000);
+  &#125;
+&#125;
+        </code></pre>
+        <button class="copy-button" (click)="copyToClipboard()">
+          <span class="material-icons">content_copy</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">API do Serviço</h2>
+    </div>
+    <div class="card-body">
+      <h3 class="text-lg font-semibold">Métodos</h3>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Parâmetros</th>
+            <th>Descrição</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>show(message: string)</code></td>
+            <td><code>message</code> (opcional): A mensagem a ser exibida abaixo do spinner. O padrão é 'Carregando...'.</td>
+            <td>Exibe o indicador de carregamento em tela cheia.</td>
+          </tr>
+          <tr>
+            <td><code>hide()</code></td>
+            <td>Nenhum</td>
+            <td>Esconde o indicador de carregamento.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

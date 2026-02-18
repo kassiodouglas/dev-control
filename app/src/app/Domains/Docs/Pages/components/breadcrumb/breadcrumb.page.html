@@ -1,0 +1,88 @@
+
+<comp-page-header title="Breadcrumb" [breadcrumbs]="breadcrumbs"></comp-page-header>
+
+<div class="p-4">
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">Visão Geral</h2>
+    </div>
+    <div class="card-body">
+      <p>O componente <code>comp-breadcrumb</code> é usado para exibir a hierarquia de navegação, permitindo que os usuários entendam sua localização atual na aplicação.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">Exemplo de Uso</h2>
+    </div>
+    <div class="card-body">
+      <comp-breadcrumb [items]="exampleBreadcrumbs"></comp-breadcrumb>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">Código</h2>
+    </div>
+    <div class="card-body">
+      <h3 class="text-lg font-semibold">HTML</h3>
+      <div class="code-toolbar">
+        <pre><code class="language-html">
+<comp-breadcrumb [items]="exampleBreadcrumbs"></comp-breadcrumb>
+        </code></pre>
+        <button class="copy-button" (click)="copyToClipboard('html')">
+          <span class="material-icons">content_copy</span>
+        </button>
+      </div>
+
+      <h3 class="mt-4 text-lg font-semibold">TypeScript</h3>
+      <div class="code-toolbar">
+        <pre><code class="language-typescript">
+import &#123; Component &#125; from '@angular/core';
+import &#123; BreadcrumbItem &#125; from '...'; // Importe a interface
+
+@Component(&#123;
+  selector: 'app-sua-pagina',
+  templateUrl: './sua-pagina.component.html',
+&#125;)
+export class SuaPaginaComponent &#123;
+  exampleBreadcrumbs: BreadcrumbItem[] = [
+    &#123; label: 'Home', url: '/' &#125;,
+    &#123; label: 'Produtos', url: '/produtos' &#125;,
+    &#123; label: 'Categoria', url: '/produtos/categoria' &#125;,
+    &#123; label: 'Produto' &#125;,
+  ];
+&#125;
+        </code></pre>
+        <button class="copy-button" (click)="copyToClipboard('ts')">
+          <span class="material-icons">content_copy</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">API do Componente</h2>
+    </div>
+    <div class="card-body">
+      <h3 class="text-lg font-semibold">Inputs</h3>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Tipo</th>
+            <th>Descrição</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>items</code></td>
+            <td><code>BreadcrumbItem[]</code></td>
+            <td>Uma lista de objetos <code>BreadcrumbItem</code>, onde cada objeto representa um nível da navegação. A interface <code>BreadcrumbItem</code> contém as propriedades <code>label</code> (string, obrigatório) e <code>url</code> (string, opcional).</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

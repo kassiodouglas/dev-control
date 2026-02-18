@@ -1,0 +1,30 @@
+<div class="flex flex-col gap-1">
+  @if (label) {
+    <label class="ml-1 text-sm font-medium text-secondary-700 dark:text-secondary-300">{{ label }}</label>
+  }
+  
+  <mat-form-field appearance="outline" subscriptSizing="dynamic" class="w-full custom-field-modern">
+    <input matInput 
+           [formControl]="control" 
+           [placeholder]="placeholder" 
+           [type]="currentType">
+    
+    @if (icon && !isPassword) {
+      <mat-icon matSuffix class="text-secondary-400">{{ icon }}</mat-icon>
+    }
+
+    @if (isPassword) {
+      <mat-icon matSuffix (click)="togglePassword()" class="cursor-pointer text-secondary-400">
+        {{ hidePassword ? 'visibility_off' : 'visibility' }}
+      </mat-icon>
+    }
+  </mat-form-field>
+
+  @if (control && control.invalid && control.touched) {
+    <div class="ml-1 text-xs text-red-600 dark:text-red-400 animate-fade-in">
+      @if (control.hasError('required')) { <span>{{ label || 'Campo' }} é obrigatório</span> }
+      @if (control.hasError('email')) { <span>Digite um e-mail válido</span> }
+      @if (control.hasError('minlength')) { <span>Mínimo {{ control.getError('minlength').requiredLength }} caracteres</span> }
+    </div>
+  }
+</div>

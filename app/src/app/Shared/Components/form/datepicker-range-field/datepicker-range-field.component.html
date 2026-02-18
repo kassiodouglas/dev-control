@@ -1,0 +1,17 @@
+<div class="flex flex-col gap-1">
+  @if (label) {
+    <label class="ml-1 text-sm font-medium text-secondary-700 dark:text-secondary-300">{{ label }}</label>
+  }
+
+  <mat-form-field appearance="outline" subscriptSizing="dynamic" class="w-full custom-field-modern">
+    <mat-date-range-input [formGroup]="rangeGroup" [rangePicker]="picker">
+      <input matStartDate formControlName="start" placeholder="Início">
+      <input matEndDate formControlName="end" placeholder="Fim">
+    </mat-date-range-input>
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-date-range-picker #picker></mat-date-range-picker>
+  </mat-form-field>
+
+  <comp-error-message [control]="rangeGroup.get('start')"></comp-error-message>
+  <comp-error-message [control]="rangeGroup.get('end')"></comp-error-message>
+</div>

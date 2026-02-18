@@ -1,0 +1,109 @@
+
+<comp-page-header title="Notification Service" [breadcrumbs]="breadcrumbs"></comp-page-header>
+
+<div class="p-4">
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">Visão Geral</h2>
+    </div>
+    <div class="card-body">
+      <p>O <code>NotificationService</code> é um serviço injetável que permite exibir mensagens de notificação (toasts) para o usuário. É ideal para fornecer feedback sobre ações, como sucesso, erro, aviso ou informação.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">Exemplo de Uso</h2>
+    </div>
+    <div class="card-body">
+      <div class="flex flex-wrap gap-2">
+        <button class="btn btn-success" (click)="showSuccess()">Sucesso</button>
+        <button class="btn btn-danger" (click)="showFailure()">Falha</button>
+        <button class="btn btn-warning" (click)="showWarning()">Aviso</button>
+        <button class="btn btn-info" (click)="showInfo()">Informação</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">Código</h2>
+    </div>
+    <div class="card-body">
+      <h3 class="text-lg font-semibold">TypeScript</h3>
+      <div class="code-toolbar">
+        <pre><code class="language-typescript">
+import &#123; Component, inject &#125; from '@angular/core';
+import &#123; NotificationService &#125; from 'src/app/Shared/Services/notification.service';
+
+@Component(&#123;
+  selector: 'app-sua-pagina',
+  templateUrl: './sua-pagina.component.html',
+&#125;)
+export class SuaPaginaComponent &#123;
+  private notificationService = inject(NotificationService);
+
+  showSuccess() &#123;
+    this.notificationService.success('Esta é uma mensagem de sucesso!');
+  &#125;
+
+  showFailure() &#123;
+    this.notificationService.failure('Esta é uma mensagem de falha.');
+  &#125;
+
+  showWarning() &#123;
+    this.notificationService.warning('Esta é uma mensagem de aviso.');
+  &#125;
+
+  showInfo() &#123;
+    this.notificationService.info('Esta é uma mensagem de informação.');
+  &#125;
+&#125;
+        </code></pre>
+        <button class="copy-button" (click)="copyToClipboard()">
+          <span class="material-icons">content_copy</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">API do Serviço</h2>
+    </div>
+    <div class="card-body">
+      <h3 class="text-lg font-semibold">Métodos</h3>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Parâmetros</th>
+            <th>Descrição</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>success(message: string)</code></td>
+            <td><code>message</code>: A mensagem a ser exibida.</td>
+            <td>Exibe uma notificação de sucesso.</td>
+          </tr>
+          <tr>
+            <td><code>failure(message: string)</code></td>
+            <td><code>message</code>: A mensagem a ser exibida.</td>
+            <td>Exibe uma notificação de falha (erro).</td>
+          </tr>
+          <tr>
+            <td><code>warning(message: string)</code></td>
+            <td><code>message</code>: A mensagem a ser exibida.</td>
+            <td>Exibe uma notificação de aviso.</td>
+          </tr>
+          <tr>
+            <td><code>info(message: string)</code></td>
+            <td><code>message</code>: A mensagem a ser exibida.</td>
+            <td>Exibe uma notificação de informação.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

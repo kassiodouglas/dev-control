@@ -1,0 +1,11 @@
+<div class="flex flex-col gap-1">
+  @if (label) {
+    <label class="ml-1 text-sm font-medium text-secondary-700 dark:text-secondary-300">{{ label }}</label>
+  }
+
+  <mat-form-field appearance="outline" subscriptSizing="dynamic" class="w-full custom-field-modern">
+    <input matInput type="datetime-local" [formControl]="control" [placeholder]="placeholder" [min]="min" [max]="max">
+  </mat-form-field>
+
+  <comp-error-message [control]="control"></comp-error-message>
+</div>

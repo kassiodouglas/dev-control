@@ -1,0 +1,28 @@
+<div class="p-8">
+  <h1 class="mb-6 text-3xl font-bold">Panel Component</h1>
+
+  <p class="mb-4">The Panel Component provides a slide-in panel that can be opened from the left or right side of the screen.</p>
+
+  <h2 class="mb-4 text-2xl font-bold">Usage</h2>
+  <pre><code class="language-html">
+<app-panel id="my-panel" size="sm" position="left">
+  <div title>Panel Title</div>
+  <p>This is the content of the panel.</p>
+</app-panel>
+  </code></pre>
+
+  <h2 class="mt-8 mb-4 text-2xl font-bold">Inputs</h2>
+  <ul class="list-disc list-inside">
+    <li><strong>id (string):</strong> A unique identifier for the panel. Required.</li>
+    <li><strong>size ('xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl' | 'full'):</strong> The width of the panel. Defaults to 'md'.</li>
+    <li><strong>position ('left' | 'right'):</strong> The side from which the panel appears. Defaults to 'left'.</li>
+  </ul>
+
+  <h2 class="mt-8 mb-4 text-2xl font-bold">Example</h2>
+  <button (click)="openPanel('example-panel')" class="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600">Open Example Panel</button>
+</div>
+
+<app-panel id="example-panel" size="md" position="right">
+  <div title>Example Panel</div>
+  <p>This is an example panel for documentation.</p>
+</app-panel>

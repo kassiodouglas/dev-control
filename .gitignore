@@ -6,6 +6,8 @@
 /dist
 /app/dist
 /app/.angular
+/app-gemini/dist
+/app-gemini/.angular
 
 # Logs
 logs/

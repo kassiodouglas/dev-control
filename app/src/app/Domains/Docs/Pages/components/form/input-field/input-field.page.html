@@ -1,0 +1,170 @@
+
+<comp-page-header title="Input Field" [breadcrumbs]="breadcrumbs"></comp-page-header>
+
+<div class="p-4">
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">Visão Geral</h2>
+    </div>
+    <div class="card-body">
+      <p>O <code>comp-input-field</code> é um componente de formulário encapsulado que simplifica a criação de campos de entrada (inputs) com validação, rótulos, ícones e mensagens de erro. Ele deve ser usado dentro de um <code>FormGroup</code> do Angular Reactive Forms.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">Exemplo de Uso</h2>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="myForm" class="space-y-4">
+        <comp-input-field
+          label="Nome"
+          controlName="name"
+          placeholder="Digite seu nome completo"
+          icon="person"
+        ></comp-input-field>
+
+        <comp-input-field
+          label="Email"
+          controlName="email"
+          type="email"
+          placeholder="ex: seuemail@dominio.com"
+          icon="email"
+        ></comp-input-field>
+
+        <comp-input-field
+          label="Senha"
+          controlName="password"
+          type="password"
+          placeholder="Digite uma senha segura"
+          icon="lock"
+        ></comp-input-field>
+      </form>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">Código</h2>
+    </div>
+    <div class="card-body">
+      <h3 class="text-lg font-semibold">HTML</h3>
+      <div class="code-toolbar">
+        <pre><code class="language-html">
+<form [formGroup]="myForm" class="space-y-4">
+  <!-- Campo de Texto Simples com Ícone -->
+  <comp-input-field
+    label="Nome"
+    controlName="name"
+    placeholder="Digite seu nome completo"
+    icon="person"
+  ></comp-input-field>
+
+  <!-- Campo de Email com Validação -->
+  <comp-input-field
+    label="Email"
+    controlName="email"
+    type="email"
+    placeholder="ex: seuemail@dominio.com"
+    icon="email"
+  ></comp-input-field>
+
+  <!-- Campo de Senha -->
+  <comp-input-field
+    label="Senha"
+    controlName="password"
+    type="password"
+    placeholder="Digite uma senha segura"
+    icon="lock"
+  ></comp-input-field>
+</form>
+        </code></pre>
+        <button class="copy-button" (click)="copyToClipboard('html')">
+          <span class="material-icons">content_copy</span>
+        </button>
+      </div>
+
+      <h3 class="mt-4 text-lg font-semibold">TypeScript</h3>
+      <div class="code-toolbar">
+        <pre><code class="language-typescript">
+import &#123; Component, inject &#125; from '@angular/core';
+import &#123; FormBuilder, Validators &#125; from '@angular/forms';
+
+@Component(&#123;
+  selector: 'app-sua-pagina',
+  // ...
+&#125;)
+export class SuaPaginaComponent &#123;
+  private fb = inject(FormBuilder);
+
+  myForm = this.fb.group(&#123;
+    name: ['', [Validators.required, Validators.minLength(3)]],
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required, Validators.minLength(6)]],
+  &#125;);
+&#125;
+        </code></pre>
+        <button class="copy-button" (click)="copyToClipboard('ts')">
+          <span class="material-icons">content_copy</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">API do Componente</h2>
+    </div>
+    <div class="card-body">
+      <h3 class="text-lg font-semibold">Inputs</h3>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Tipo</th>
+            <th>Padrão</th>
+            <th>Descrição</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>label</code></td>
+            <td><code>string</code></td>
+            <td><code>''</code></td>
+            <td>O rótulo exibido acima do campo.</td>
+          </tr>
+          <tr>
+            <td><code>controlName</code></td>
+            <td><code>string</code></td>
+            <td><code>''</code></td>
+            <td><strong>(Obrigatório)</strong> O nome do controle no <code>FormGroup</code>.</td>
+          </tr>
+          <tr>
+            <td><code>placeholder</code></td>
+            <td><code>string</code></td>
+            <td><code>''</code></td>
+            <td>O texto de placeholder do campo.</td>
+          </tr>
+          <tr>
+            <td><code>type</code></td>
+            <td><code>string</code></td>
+            <td><code>'text'</code></td>
+            <td>O tipo do input (ex: 'text', 'email', 'password').</td>
+          </tr>
+          <tr>
+            <td><code>icon</code></td>
+            <td><code>string</code></td>
+            <td><code>''</code></td>
+            <td>O nome do ícone do Material Icons a ser exibido dentro do campo.</td>
+          </tr>
+          <tr>
+            <td><code>disabled</code></td>
+            <td><code>boolean</code></td>
+            <td><code>false</code></td>
+            <td>Desabilita o campo de entrada.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

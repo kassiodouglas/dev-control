@@ -1,0 +1,75 @@
+<div class="p-8">
+  <h1 class="mb-6 text-3xl font-bold">Component Demonstrations</h1>
+
+  <!-- PrimaryButtonComponent -->
+  <div class="mb-8">
+    <a routerLink="/docs/components/buttons/primary-button" class="mb-4 text-2xl font-semibold hover:underline">Primary Button</a>
+    <div class="flex flex-wrap items-center gap-4">
+      <comp-primary-button>Default</comp-primary-button>
+      <comp-primary-button [isLoading]="true">Loading</comp-primary-button>
+      <comp-primary-button [disabled]="true">Disabled</comp-primary-button>
+    </div>
+  </div>
+
+  <!-- InputFieldComponent -->
+  <div class="mb-8">
+    <a routerLink="/docs/components/form/input-field" class="mb-4 text-2xl font-semibold hover:underline">Input Field</a>
+    <form [formGroup]="myForm">
+      <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+        <div>
+          <comp-input-field label="Email Address" type="email" placeholder="you@example.com" controlName="email"></comp-input-field>
+        </div>
+        <div>
+          <comp-input-field label="Password" type="password" placeholder="••••••••" controlName="password"></comp-input-field>
+        </div>
+        <div class="md:col-span-2">
+          <comp-input-field label="Disabled Input" type="text" placeholder="Can't touch this" controlName="disabled"></comp-input-field>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- ModalComponent -->
+  <div class="mb-8">
+    <a routerLink="/docs/components/modal" class="mb-4 text-2xl font-semibold hover:underline">Modal</a>
+    <div class="flex flex-wrap items-center gap-4">
+      <comp-primary-button (click)="openModal('info-modal')">Open Modal</comp-primary-button>
+    </div>
+  </div>
+
+  <!-- CardComponent -->
+  <div class="mb-8">
+    <a routerLink="/docs/components/card" class="mb-4 text-2xl font-semibold hover:underline">Card</a>
+    <div class="flex flex-wrap items-center gap-4">
+      <comp-card>
+        <div header>
+          <h2 class="text-xl font-bold">Card Title</h2>
+        </div>
+        <div body>
+          <p>This is the body of the card.</p>
+        </div>
+        <div footer>
+          <comp-primary-button>Action</comp-primary-button>
+        </div>
+      </comp-card>
+    </div>
+  </div>
+
+  <!-- PanelComponent -->
+  <div>
+    <a routerLink="/docs/components/panel" class="mb-4 text-2xl font-semibold hover:underline">Panel</a>
+    <div class="flex flex-wrap items-center gap-4">
+      <comp-primary-button (click)="openPanel('index-panel')">Open Panel</comp-primary-button>
+    </div>
+  </div>
+</div>
+
+<app-modal id="info-modal">
+  <h2 class="mb-4 text-xl font-bold">Modal Title</h2>
+  <p>This is the content of the modal.</p>
+</app-modal>
+
+<app-panel id="index-panel" size="sm" position="left">
+  <div title>Painel de Exemplo</div>
+  <p>Este é um exemplo de painel na página inicial.</p>
+</app-panel>

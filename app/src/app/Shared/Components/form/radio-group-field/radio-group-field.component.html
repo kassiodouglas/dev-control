@@ -1,0 +1,15 @@
+<div class="flex flex-col gap-1">
+  @if (label) {
+    <label class="ml-1 text-sm font-medium text-secondary-700 dark:text-secondary-300">{{ label }}</label>
+  }
+
+  <mat-radio-group [formControl]="control" color="primary" [class]="'flex gap-2 ' + (layout === 'column' ? 'flex-col' : 'flex-row')">
+    @for (option of options; track option) {
+      <mat-radio-button [value]="option?.[optionValue] ?? option">
+        {{ option?.[optionLabel] ?? option }}
+      </mat-radio-button>
+    }
+  </mat-radio-group>
+
+  <comp-error-message [control]="control"></comp-error-message>
+</div>

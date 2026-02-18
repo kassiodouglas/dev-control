@@ -1,0 +1,44 @@
+<comp-page-header title="Form Components Demo" [breadcrumbs]="[{label: 'Components'}, {label: 'Form'}, {label: 'All Fields'}]"></comp-page-header>
+
+<div class="p-6">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="flex flex-col gap-4">
+
+      <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <comp-input-field label="Name" controlName="name" placeholder="John Doe"></comp-input-field>
+        <comp-input-field label="Email" controlName="email" placeholder="john@example.com"></comp-input-field>
+      </div>
+
+      <comp-input-field label="Password" controlName="password" type="password"></comp-input-field>
+
+      <comp-textarea-field label="Description" controlName="description" [rows]="4"></comp-textarea-field>
+
+      <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <comp-select-field label="Category" controlName="category" [options]="categories"></comp-select-field>
+        <comp-select-field label="Tags (Multiple)" controlName="tags" [options]="tags" optionLabel="name" optionValue="id" [multiple]="true"></comp-select-field>
+      </div>
+
+      <comp-radio-group-field label="Gender" controlName="gender" [options]="genders" layout="row"></comp-radio-group-field>
+
+      <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <comp-datepicker-field label="Birth Date" controlName="birthDate"></comp-datepicker-field>
+        <comp-datetime-field label="Appointment" controlName="appointment"></comp-datetime-field>
+      </div>
+
+      <comp-datepicker-range-field label="Event Duration" controlName="dateRange"></comp-datepicker-range-field>
+
+      <div class="flex items-center gap-4">
+        <comp-checkbox-field label="I agree to terms" controlName="agree"></comp-checkbox-field>
+        <comp-slide-toggle-field label="Enable Notifications" controlName="notifications"></comp-slide-toggle-field>
+      </div>
+
+      <div class="flex justify-end mt-4">
+        <comp-primary-button label="Submit" type="submit"></comp-primary-button>
+      </div>
+
+    </form>
+
+    <div class="p-4 mt-8 bg-gray-100 rounded dark:bg-gray-800">
+      <h3 class="mb-2 font-bold">Form Value:</h3>
+      <pre class="overflow-auto text-xs">{{ form.value | json }}</pre>
+    </div>
+</div>
