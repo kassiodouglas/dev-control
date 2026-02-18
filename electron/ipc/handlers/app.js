@@ -1,9 +1,9 @@
 const { ipcMain } = require("electron");
-const appRepository = require("../../database/repositries/AppRepository");
+const repository = require("../../database/repositories/AppRepository");
 
 function setupAppIpcHandlers() {
   ipcMain.handle("get-apps", async () => {
-    const apps = await appRepository.getApps();
+    const apps = await repository.getApps();
     return apps.map(app => ({
       ...app,
       availableBranches: JSON.parse(app.availableBranches) // Parse back to array
@@ -11,15 +11,15 @@ function setupAppIpcHandlers() {
   });
 
   ipcMain.handle("add-app", async (event, app) => {
-    return appRepository.addApp(app);
+    return repository.addApp(app);
   });
 
   ipcMain.handle("update-app", async (event, id, updates) => {
-    return appRepository.updateApp(id, updates);
+    return repository.updateApp(id, updates);
   });
 
   ipcMain.handle("delete-app", async (event, id) => {
-    return appRepository.deleteApp(id);
+    return repository.deleteApp(id);
   });
 }
 

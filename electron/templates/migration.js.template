@@ -1,0 +1,15 @@
+exports.up = function(knex) {
+  return knex.schema
+    .createTable("{{tableName}}", function (table) {
+      table.increments("id");
+      // Adicione aqui as colunas específicas para {{tableName}}
+      // Exemplo: table.string("name").notNullable();
+      // Exemplo: table.integer("some_id").unsigned().references("other_table.id");
+      table.timestamps(true, true);
+    });
+};
+
+exports.down = function(knex) {
+  return knex.schema
+    .dropTableIfExists("{{tableName}}");
+};

@@ -1,5 +1,5 @@
 const { ipcMain } = require("electron");
-const repository = require("../../database/repository");
+const repository = require("../../database/repositories/SecurityConfigRepository");
 
 function setupSecurityConfigIpcHandlers() {
   ipcMain.handle("get-security-config", async () => {

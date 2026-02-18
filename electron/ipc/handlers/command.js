@@ -1,5 +1,5 @@
 const { ipcMain } = require("electron");
-const repository = require("../../database/repository");
+const repository = require("../../database/repositories/CommandRepository");
 
 function setupCommandIpcHandlers() {
   ipcMain.handle("get-saved-commands-for-app", async (event, appId) => {

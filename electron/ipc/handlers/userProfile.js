@@ -1,5 +1,5 @@
 const { ipcMain } = require("electron");
-const repository = require("../../database/repository");
+const repository = require("../../database/repositories/UserProfileRepository");
 
 function setupUserProfileIpcHandlers() {
   ipcMain.handle("get-user-profile", async () => {

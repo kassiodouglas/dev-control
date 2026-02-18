@@ -5,21 +5,21 @@ module.exports = (app = null) => {
     development: {
       client: "sqlite3",
       connection: {
-        filename: path.resolve(__dirname, "database", "database.sqlite")
+        filename: path.resolve(__dirname, "database.sqlite")
       },
       useNullAsDefault: true,
       migrations: {
-        directory: path.resolve(__dirname, "database", "migrations")
+        directory: path.resolve(__dirname, "migrations")
       }
     },
     production: {
       client: "sqlite3",
       connection: {
-        filename: app && app.getPath ? path.join(app.getPath("userData"), "database.sqlite") : path.resolve(__dirname, "database", "database.sqlite")
+        filename: app && app.getPath ? path.join(app.getPath("userData"), "database.sqlite") : path.resolve(__dirname, "database.sqlite")
       },
       useNullAsDefault: true,
       migrations: {
-        directory: path.resolve(__dirname, "database", "migrations")
+        directory: path.resolve(__dirname,  "migrations")
       }
     }
   };

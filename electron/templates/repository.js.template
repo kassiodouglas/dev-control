@@ -1,0 +1,28 @@
+const db = require("../connection");
+
+class {{ModuleName}}Repository {
+  async get{{ModuleName}}s() {
+    return db("{{tableName}}").select("*");
+  }
+
+  async add{{ModuleName}}({{moduleName}}) {
+    // Implemente a lógica de adição para {{moduleName}}
+    // Exemplo: await db("{{tableName}}").insert({{moduleName}});
+    // return {{moduleName}};
+    throw new Error("Método add{{ModuleName}} não implementado.");
+  }
+
+  async update{{ModuleName}}(id, updates) {
+    // Implemente a lógica de atualização para {{moduleName}}
+    // Exemplo: return db("{{tableName}}").where({ id }).update(updates);
+    throw new Error("Método update{{ModuleName}} não implementado.");
+  }
+
+  async delete{{ModuleName}}(id) {
+    // Implemente a lógica de exclusão para {{moduleName}}
+    // Exemplo: return db("{{tableName}}").where({ id }).del();
+    throw new Error("Método delete{{ModuleName}} não implementado.");
+  }
+}
+
+module.exports = new {{ModuleName}}Repository();

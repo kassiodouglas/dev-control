@@ -1,5 +1,5 @@
 const { ipcMain } = require("electron");
-const repository = require("../../database/repository");
+const repository = require("../../database/repositories/GlobalNotesRepository");
 
 function setupGlobalNotesIpcHandlers() {
   ipcMain.handle("get-global-notes", async () => {

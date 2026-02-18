@@ -1,0 +1,25 @@
+const { ipcMain } = require("electron");
+const {{moduleName}}Repository = require("{{repositoryPath}}");
+
+function setup{{ModuleName}}IpcHandlers() {
+  ipcMain.handle("get-{{channelPrefix}}s", async () => {
+    const {{moduleName}}s = await {{moduleName}}Repository.get{{ModuleName}}s();
+    // Se houver campos que precisam de parsing (ex: JSON), adicione aqui:
+    // return {{moduleName}}s.map(item => ({...item, someField: JSON.parse(item.someField)}));
+    return {{moduleName}}s;
+  });
+
+  ipcMain.handle("add-{{channelPrefix}}", async (event, {{moduleName}}) => {
+    return {{moduleName}}Repository.add{{ModuleName}}({{moduleName}});
+  });
+
+  ipcMain.handle("update-{{channelPrefix}}", async (event, id, updates) => {
+    return {{moduleName}}Repository.update{{ModuleName}}(id, updates);
+  });
+
+  ipcMain.handle("delete-{{channelPrefix}}", async (event, id) => {
+    return {{moduleName}}Repository.delete{{ModuleName}}(id);
+  });
+}
+
+module.exports = setup{{ModuleName}}IpcHandlers;

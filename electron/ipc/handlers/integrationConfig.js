@@ -1,5 +1,5 @@
 const { ipcMain } = require("electron");
-const repository = require("../../database/repository");
+const repository = require("../../database/repositories/IntegrationConfigRepository");
 
 function setupIntegrationConfigIpcHandlers() {
   ipcMain.handle("get-integration-config", async () => {

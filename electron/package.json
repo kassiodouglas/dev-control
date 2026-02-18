@@ -6,7 +6,10 @@
     "start": "electron .",
     "migrate:make": "npx knex --knexfile knexfile.js migrate:make",
     "migrate:latest": "npx knex --knexfile knexfile.js migrate:latest",
-    "migrate:rollback": "npx knex --knexfile knexfile.js migrate:rollback"
+    "migrate:rollback": "npx knex --knexfile knexfile.js migrate:rollback",
+    "generate:repository": "node scripts/generate-repository.js",
+    "generate:handler": "node scripts/generate-handler.js",
+    "generate:migration": "node scripts/generate-migration.js"
   },
   "devDependencies": {
     "electron": "^31.7.7"

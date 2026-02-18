@@ -1,6 +1,6 @@
 const db = require("../connection");
 
-class IaCacheRepository {
+class AICacheRepository {
   async getAICacheEntry(work_item_id) {
     return db("ai_cache").where({ work_item_id }).first();
   }
@@ -26,4 +26,4 @@ class IaCacheRepository {
   }
 }
 
-module.exports = new IaCacheRepository();
+module.exports = new AICacheRepository();

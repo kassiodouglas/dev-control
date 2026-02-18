@@ -1,5 +1,5 @@
 const { ipcMain } = require("electron");
-const repository = require("../../database/repository");
+const repository = require("../../database/repositories/AICacheRepository");
 
 function setupIaCacheIpcHandlers() {
   ipcMain.handle("get-ai-cache-entry", async (event, workItemId) => {

@@ -1,5 +1,5 @@
 const { ipcMain } = require("electron");
-const repository = require("../../database/repository");
+const repository = require("../../database/repositories/AppLogRepository");
 
 function setupAppLogIpcHandlers() {
   ipcMain.handle("get-app-logs-for-app", async (event, appId) => {
