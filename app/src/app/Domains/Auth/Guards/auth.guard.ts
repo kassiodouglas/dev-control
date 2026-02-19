@@ -43,11 +43,11 @@ export const authGuard: CanActivateFn = async (route, state) => {
 
   if (!isAuthenticated && !isLoginPage) {
     // Original logic for unauthenticated non-login pages with no security password
-    if (!hasSecurityPassword) {
-        // If no password, and not authenticated, and not on login, something is wrong. Redirect to dashboard.
-        router.navigate(['/dashboard']); // Should now correctly allow entry if the above check passes
-        return false; // Still prevent navigation if authentication is somehow required despite no password
-    }
+    // if (!hasSecurityPassword) {
+    //     // If no password, and not authenticated, and not on login, something is wrong. Redirect to dashboard.
+    //     router.navigate(['/dashboard']); // Should now correctly allow entry if the above check passes
+    //     return false; // Still prevent navigation if authentication is somehow required despite no password
+    // }
   }
 
   return true;
