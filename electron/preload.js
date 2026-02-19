@@ -1,3 +1,13 @@
-// Este é o arquivo preload.js. Ele é executado antes que o renderer process seja carregado.
-// Você pode usar este arquivo para expor APIs Node.js ao seu frontend de forma segura.
-// Por enquanto, ele está vazio, mas pode ser expandido conforme a necessidade da aplicação.
+const { contextBridge, ipcRenderer } = require("electron");
+
+contextBridge.exposeInMainWorld("electronAPI", {
+  config: {
+    hasSecurityPassword: () => ipcRenderer.invoke("config:hasSecurityPassword"),
+    setSecurityPassword: (password) => ipcRenderer.invoke("config:setSecurityPassword", password),
+    verifySecurityPassword: (password) => ipcRenderer.invoke("config:verifySecurityPassword", password),
+    isSetupComplete: () => ipcRenderer.invoke("config:isSetupComplete"),
+    updateProfile: (profile) => ipcRenderer.invoke("config:updateProfile", profile),
+    updateIntegrations: (integrations) => ipcRenderer.invoke("config:updateIntegrations", integrations),
+    completeSetup: () => ipcRenderer.invoke("config:completeSetup"),
+  },
+});

@@ -9,6 +9,10 @@ function setupIntegrationConfigIpcHandlers() {
   ipcMain.handle("save-integration-config", async (event, config) => {
     return repository.saveIntegrationConfig(config);
   });
+
+  ipcMain.handle("config:updateIntegrations", async (event, config) => {
+    return repository.saveIntegrationConfig(config);
+  });
 }
 
 module.exports = setupIntegrationConfigIpcHandlers;

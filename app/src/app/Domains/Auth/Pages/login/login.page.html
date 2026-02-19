@@ -1,30 +1,24 @@
-<layout-auth>
-  <div class="w-full max-w-md mx-auto">
-    <div class="mb-6 lg:mb-8">
-      <div class="flex items-center gap-2 mb-6 lg:hidden">
-        <div class="flex items-center justify-center p-2 rounded-lg bg-primary-50 dark:bg-secondary-800">
-            <mat-icon class="text-primary-600 dark:text-primary-400">[APP_LOGO]</mat-icon>
-        </div>
-        <span class="text-xl font-bold text-gray-800 dark:text-white">xxxx[APP_NAME]</span>
+<div class="flex items-center justify-center min-h-screen bg-zinc-100 dark:bg-zinc-900">
+  <div class="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md dark:bg-zinc-800">
+    <h2 class="text-2xl font-bold text-center text-zinc-900 dark:text-white">Login</h2>
+    <form (ngSubmit)="login()" class="space-y-4">
+      <div>
+        <label for="password" class="block text-sm font-medium text-zinc-700 dark:text-zinc-300">Senha</label>
+        <input
+          type="password"
+          id="password"
+          [(ngModel)]="password"
+          name="password"
+          required
+          class="block w-full px-3 py-2 mt-1 border rounded-md shadow-sm border-zinc-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm dark:bg-zinc-700 dark:border-zinc-600 dark:text-white"
+        />
       </div>
-
-      <h1 class="mb-2 text-3xl font-bold text-gray-900 dark:text-white lg:text-4xl">Login</h1>
-      <p class="text-base text-secondary-500 dark:text-secondary-400 lg:text-lg">Welcome back! Please enter your credentials.</p>
-    </div>
-
-    <form-login [isLoading]="isLoading" (formSubmit)="onSubmit($event)"></form-login>
-
-    <div class="mt-6 text-center text-secondary-500 dark:text-secondary-400 lg:mt-8">
-      Don't have an account?
-      <a href="#" class="font-bold text-primary-600 hover:underline dark:text-primary-400">Sign up</a>
-    </div>
-
-    <div class="pt-2 mt-auto text-xs text-center text-secondary-400 lg:pt-8">
-      &copy; [YEAR] [APP_NAME]. All rights reserved.
-    </div>
+      <button
+        type="submit"
+        class="flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+      >
+        Entrar
+      </button>
+    </form>
   </div>
-
-  <a *ngIf="isDevMode" routerLink="/docs" class="absolute flex items-center justify-center p-2 text-white transition-colors bg-blue-500 rounded-full shadow-lg w-14 h-14 bottom-4 right-4 hover:bg-blue-600">
-    <mat-icon>description</mat-icon>
-  </a>
-</layout-auth>
+</div>

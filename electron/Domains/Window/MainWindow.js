@@ -1,6 +1,6 @@
-const { BrowserWindow } = require('electron')
-const path = require('path')
-const url = require('url')
+const { BrowserWindow } = require("electron")
+const path = require("path")
+const url = require("url")
 
 class MainWindow {
   constructor() {
@@ -10,31 +10,37 @@ class MainWindow {
       show: false, // Oculta a janela até que esteja pronta para evitar flash de conteúdo
       webPreferences: {
         nodeIntegration: true,
-        contextIsolation: false,
-        preload: path.join(__dirname, '../../preload.js') // Ajustar caminho do preload
+        contextIsolation: true,
+        preload: path.join(__dirname, "../../preload.js") // Ajustar caminho do preload
       },
-      icon: path.join(__dirname, '../../assets/icon.png'), // Definir o ícone
+      icon: path.join(__dirname, "../../assets/icon.png"), // Definir o ícone
       autoHideMenuBar: true, // Esconder a barra de menu padrão
-    })
+    });
 
-    this.window.loadURL(url.format({
-      pathname: path.join(__dirname, '../../../app/dist/index.html'), // Ajustar caminho do index.html
-      protocol: 'file:',
-      slashes: true
-    }))
+    const startUrl = process.env.NODE_ENV === "development"
+      ? "http://localhost:8001"
+      : url.format({
+        pathname: path.join(__dirname, "../../../app/dist/index.html"), // Ajustar caminho do index.html
+        protocol: "file:",
+        slashes: true
+      });
 
-    this.window.once('ready-to-show', () => {
-      this.window.maximize() // Maximiza a janela ao iniciar
-      this.window.show()
-    })
+    setTimeout(() => {
+      this.window.loadURL(startUrl);
+    }, 10000); // Adicionar um atraso de 10 segundos
+
+    this.window.once("ready-to-show", () => {
+      this.window.maximize(); // Maximiza a janela ao iniciar
+      this.window.show();
+    });
 
     // Opcional: Abrir as ferramentas de desenvolvedor
     // this.window.webContents.openDevTools()
   }
 
   getWindow() {
-    return this.window
+    return this.window;
   }
 }
 
-module.exports = MainWindow
+module.exports = MainWindow;

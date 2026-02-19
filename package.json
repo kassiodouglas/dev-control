@@ -1,0 +1,20 @@
+{
+  "name": "dev-tools-root",
+  "version": "1.0.0",
+  "description": "Root package.json for managing Angular and Electron development",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run serve:dev --workspace=app\" \"cross-env NODE_ENV=development npm run start --workspace=electron\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "cross-env": "^7.0.3"
+  },
+  "workspaces": [
+    "app",
+    "electron"
+  ]
+}

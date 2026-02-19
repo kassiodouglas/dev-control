@@ -1,0 +1,140 @@
+<div class="p-8 pb-20 mx-auto max-w-7xl">
+  <h1 class="mb-2 text-3xl font-bold text-zinc-800 dark:text-white">Dashboard</h1>
+  <p class="mb-8 text-zinc-500 dark:text-zinc-400">System overview and active processes.</p>
+
+  <!-- Stats Grid -->
+  <div class="grid grid-cols-1 gap-6 mb-10 md:grid-cols-2 lg:grid-cols-4">
+    <!-- Stat Card 1: Total Projects -->
+    <div class="flex items-center gap-4 p-6 transition-colors bg-white border shadow-sm dark:bg-zinc-900 rounded-xl border-zinc-200 dark:border-zinc-800">
+      <div class="flex items-center justify-center w-12 h-12 text-xl text-indigo-600 rounded-full bg-indigo-50 dark:bg-indigo-900/30 dark:text-indigo-400 shrink-0">
+        <i class="fa-solid fa-layer-group"></i>
+      </div>
+      <div>
+        <!-- <div class="text-2xl font-bold text-zinc-800 dark:text-white">{{ appService.apps().length }}</div> -->
+        <div class="text-sm text-zinc-500 dark:text-zinc-400">Total Projects</div>
+      </div>
+    </div>
+
+    <!-- Stat Card 2: Running Apps -->
+    <div class="flex items-center gap-4 p-6 transition-colors bg-white border shadow-sm dark:bg-zinc-900 rounded-xl border-zinc-200 dark:border-zinc-800">
+      <div class="flex items-center justify-center w-12 h-12 text-xl text-green-600 rounded-full bg-green-50 dark:bg-green-900/30 dark:text-green-400 shrink-0">
+        <i class="fa-solid fa-play"></i>
+      </div>
+      <div>
+        <!-- <div class="text-2xl font-bold text-zinc-800 dark:text-white">{{ appService.runningAppsCount() }}</div> -->
+        <div class="text-sm text-zinc-500 dark:text-zinc-400">Running Apps</div>
+      </div>
+    </div>
+
+    <!-- Stat Card 3: Active Stories + Breakdown (Spans 2 cols on LG) -->
+    <div class="flex flex-col justify-between col-span-1 gap-6 p-6 transition-colors bg-white border shadow-sm md:col-span-2 dark:bg-zinc-900 rounded-xl border-zinc-200 dark:border-zinc-800 sm:flex-row sm:items-center">
+      <div class="flex items-center gap-4">
+        <div class="flex items-center justify-center w-12 h-12 text-xl text-blue-600 rounded-full bg-blue-50 dark:bg-blue-900/30 dark:text-blue-400 shrink-0">
+          <i class="fa-brands fa-microsoft"></i>
+        </div>
+        <div>
+          <!-- <div class="text-2xl font-bold text-zinc-800 dark:text-white">{{ appService.azureWorkItems().length }}</div> -->
+          <div class="text-sm text-zinc-500 dark:text-zinc-400">Active Stories</div>
+        </div>
+      </div>
+
+      <!-- Status Breakdown -->
+      <div class="flex flex-wrap justify-start flex-1 gap-2 sm:justify-end">
+         <!-- @for (stat of usStats(); track stat.state) {
+            <div class="px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-2 border transition-colors" [ngClass]="getStatColorClass(stat.state)">
+               <span>{{ stat.state }}</span>
+               <span class="bg-white/40 dark:bg-black/20 px-1.5 py-0.5 rounded text-[10px] min-w-[20px] text-center">{{ stat.count }}</span>
+            </div>
+         } -->
+      </div>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 gap-8 lg:grid-cols-2">
+    <!-- Active Apps List -->
+    <div>
+       <h2 class="mb-4 text-xl font-bold text-zinc-800 dark:text-white">Active Applications</h2>
+       <div class="bg-white dark:bg-zinc-900 rounded-xl shadow-sm border border-zinc-200 dark:border-zinc-800 overflow-hidden transition-colors min-h-[200px]">
+         <!-- @if (appService.runningAppsCount() > 0) {
+           <div class="divide-y divide-zinc-100 dark:divide-zinc-800">
+             @for (app of appService.apps(); track app.id) {
+               @if (app.status === 'running') {
+                 <div class="flex items-center justify-between p-4 transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-800">
+                    <div class="flex items-center min-w-0 gap-3">
+                       <div class="flex items-center justify-center w-8 h-8 text-indigo-600 bg-indigo-100 rounded dark:bg-indigo-900/50 dark:text-indigo-400 shrink-0">
+                          <i class="fa-brands fa-js"></i>
+                       </div>
+                       <div class="min-w-0">
+                          <div class="font-medium truncate text-zinc-700 dark:text-zinc-200">{{ app.name }}</div>
+                          <div class="font-mono text-xs text-zinc-500 dark:text-zinc-400">
+                            <i class="mr-1 fa-solid fa-code-branch text-zinc-400"></i>{{ app.branch }} :{{ app.port }}
+                          </div>
+                       </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                       <button (click)="openApp(app.id)" class="w-8 h-8 transition-colors rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-400 hover:text-indigo-500">
+                         <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                       </button>
+                       <button (click)="stopApp(app.id)" class="w-8 h-8 transition-colors rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-400 hover:text-red-500">
+                         <i class="fa-solid fa-power-off"></i>
+                       </button>
+                    </div>
+                 </div>
+               }
+             }
+           </div>
+         } @else { -->
+           <div class="flex flex-col items-center justify-center h-full p-8 text-center text-zinc-400 dark:text-zinc-500">
+             <i class="mb-3 text-4xl opacity-50 fa-solid fa-ghost"></i>
+             <p>No applications running currently.</p>
+           </div>
+         <!-- } -->
+       </div>
+    </div>
+
+    <!-- Active User Stories List -->
+    <div>
+       <div class="flex items-center justify-between mb-4">
+         <h2 class="text-xl font-bold text-zinc-800 dark:text-white">Recent Stories</h2>
+         <!-- <button (click)="goToAzure()" class="text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:underline">View Board</button> -->
+       </div>
+
+       <div class="bg-white dark:bg-zinc-900 rounded-xl shadow-sm border border-zinc-200 dark:border-zinc-800 overflow-hidden transition-colors min-h-[200px]">
+         <!-- @if (appService.azureWorkItems().length > 0) {
+           <div class="divide-y divide-zinc-100 dark:divide-zinc-800">
+             @for (item of appService.azureWorkItems().slice(0, 5); track item.id) {
+                <div (click)="goToAzure()" class="flex items-center justify-between p-4 transition-colors cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-800 group">
+                   <div class="flex items-center min-w-0 gap-3">
+                      <span class="shrink-0 text-[10px] font-mono font-bold text-zinc-500 bg-zinc-100 dark:bg-zinc-800 px-1.5 py-0.5 rounded">#{{ item.id }}</span>
+                      <div class="min-w-0">
+                        <div class="text-sm font-medium truncate transition-colors text-zinc-800 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400">{{ item.title }}</div>
+                        <div class="text-[10px] text-zinc-500 dark:text-zinc-400 flex items-center gap-2 mt-0.5">
+                           @if(getLinkedAppId(item.id); as appId) {
+                              <span class="flex items-center gap-1 text-indigo-500">
+                                <i class="fa-solid fa-link"></i> Linked
+                              </span>
+                              <span class="text-zinc-300 dark:text-zinc-600">|</span>
+                           }
+                           <span>{{ item.assignedTo }}</span>
+                        </div>
+                      </div>
+                   </div>
+                   <div class="pl-2 shrink-0">
+                      <span class="px-2 py-0.5 rounded text-[10px] font-bold capitalize whitespace-nowrap"
+                        [ngClass]="getStatusClass(item.state)">
+                        {{ item.state }}
+                      </span>
+                   </div>
+                </div>
+             }
+           </div>
+         } @else { -->
+            <div class="flex flex-col items-center justify-center h-full p-8 text-center text-zinc-400 dark:text-zinc-500">
+                <i class="mb-3 text-4xl opacity-50 fa-brands fa-microsoft"></i>
+                <p>No active stories found.</p>
+            </div>
+         <!-- } -->
+       </div>
+    </div>
+  </div>
+</div>
