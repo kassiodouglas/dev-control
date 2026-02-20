@@ -1,9 +1,9 @@
 import { Routes } from '@angular/router';
-import { AzureBoardsListPage } from './Pages/azure-boards-list/azure-boards-list.page';
+import { AzureBoardsPagePage } from './Pages/azure-boards-page/azure-boards-page.page'; // Correct import
 
 export const azureBoardsRoutes: Routes = [
   {
     path: '',
-    component: AzureBoardsListPage,
+    component: AzureBoardsPagePage, // Correct component
   },
 ];

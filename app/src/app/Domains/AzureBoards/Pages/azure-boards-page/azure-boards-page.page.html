@@ -1,0 +1,665 @@
+<div class="relative flex flex-col h-full p-6 overflow-hidden transition-colors bg-zinc-50 dark:bg-zinc-950">
+  <!-- Header -->
+  <div class="flex flex-col justify-between gap-4 mb-6 md:flex-row md:items-center shrink-0">
+    <div>
+       <h1 class="flex items-center gap-2 text-2xl font-bold text-zinc-800 dark:text-white">
+         <i class="text-blue-500 fa-brands fa-microsoft"></i> Azure DevOps
+       </h1>
+       <p class="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+         @if (!appService.integrations().azureToken) {
+           <span class="bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded text-xs font-bold mr-2">DEMO MODE</span>
+         }
+         Active User Stories
+       </p>
+    </div>
+    <div class="flex items-center gap-2">
+       <!-- View Toggle -->
+       <div class="flex gap-1 p-1 mr-2 rounded-lg bg-zinc-200 dark:bg-zinc-800">
+          <button
+            (click)="viewMode.set('grid')"
+            class="flex items-center justify-center w-8 h-8 text-sm transition-all rounded-md"
+            [class.bg-white]="viewMode() === 'grid'"
+            [class.shadow-sm]="viewMode() === 'grid'"
+            [class.text-zinc-800]="viewMode() === 'grid'"
+            [class.text-zinc-500]="viewMode() !== 'grid'"
+            [class.dark:bg-zinc-700]="viewMode() === 'grid'"
+            [class.dark:text-white]="viewMode() === 'grid'"
+            title="Grid View"
+          >
+             <i class="fa-solid fa-grip"></i>
+          </button>
+          <button
+            (click)="viewMode.set('list')"
+            class="flex items-center justify-center w-8 h-8 text-sm transition-all rounded-md"
+            [class.bg-white]="viewMode() === 'list'"
+            [class.shadow-sm]="viewMode() === 'list'"
+            [class.text-zinc-800]="viewMode() === 'list'"
+            [class.text-zinc-500]="viewMode() !== 'list'"
+            [class.dark:bg-zinc-700]="viewMode() === 'list'"
+            [class.dark:text-white]="viewMode() === 'list'"
+            title="List View"
+          >
+             <i class="fa-solid fa-list"></i>
+          </button>
+       </div>
+
+       <button (click)="refresh()" class="flex items-center gap-2 px-4 py-2 transition-colors bg-white border rounded-lg shadow-sm dark:bg-zinc-800 border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 hover:text-indigo-500 dark:hover:text-indigo-400">
+         <i class="fa-solid fa-sync" [class.fa-spin]="appService.isLoadingAzure()"></i> <span class="hidden sm:inline">Refresh</span>
+       </button>
+       <button (click)="appService.setView('settings')" class="px-4 py-2 text-sm font-bold text-white transition-colors bg-indigo-600 rounded-lg shadow-sm hover:bg-indigo-700">
+         <i class="mr-1 fa-solid fa-gear"></i> <span class="hidden sm:inline">Config</span>
+       </button>
+    </div>
+  </div>
+
+  <!-- Filters Bar -->
+  <div class="flex flex-col gap-4 mb-6 sm:flex-row shrink-0">
+      <!-- Search Input -->
+      <div class="relative flex-1">
+        <i class="absolute -translate-y-1/2 fa-solid fa-search left-3 top-1/2 text-zinc-400"></i>
+        <input
+          [(ngModel)]="searchTerm"
+          type="text"
+          placeholder="Search by ID or Title..."
+          class="w-full pl-10 pr-4 py-2.5 bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 rounded-lg text-sm text-zinc-800 dark:text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors shadow-sm"
+        >
+      </div>
+
+      <!-- Status Filter -->
+      <div class="relative w-full sm:w-48">
+        <i class="absolute -translate-y-1/2 fa-solid fa-filter left-3 top-1/2 text-zinc-400"></i>
+        <select
+          [(ngModel)]="statusFilter"
+          class="w-full pl-10 pr-8 py-2.5 bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 rounded-lg text-sm text-zinc-800 dark:text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 appearance-none cursor-pointer shadow-sm transition-colors"
+        >
+          @for (state of availableStates(); track state) {
+            <option [value]="state">{{ state }}</option>
+          }
+        </select>
+        <i class="absolute text-xs -translate-y-1/2 pointer-events-none fa-solid fa-chevron-down right-3 top-1/2 text-zinc-400"></i>
+      </div>
+    </div>
+
+  <!-- Content -->
+  @if (appService.azureError()) {
+    <div class="flex items-start gap-3 p-4 mb-4 text-red-600 border border-red-200 rounded-lg bg-red-50 dark:bg-red-900/20 dark:text-red-400 dark:border-red-900/30">
+        <i class="mt-1 fa-solid fa-circle-exclamation"></i>
+        <div>
+          <div class="font-bold">Error Fetching Data</div>
+          <div class="text-sm">{{ appService.azureError() }}</div>
+        </div>
+    </div>
+  }
+
+  <div class="flex-1 overflow-y-auto custom-scrollbar">
+      @if (filteredWorkItems().length === 0 && !appService.isLoadingAzure() && !appService.azureError()) {
+        <div class="py-20 text-center text-zinc-400">
+          <i class="mb-3 text-4xl opacity-50 fa-solid fa-clipboard-list"></i>
+          <p>No User Stories found matching your filters.</p>
+        </div>
+      }
+
+      @if (viewMode() === 'grid') {
+        <!-- GRID VIEW -->
+        <div class="grid grid-cols-1 gap-4 pb-10 md:grid-cols-2 lg:grid-cols-3">
+          @for (item of filteredWorkItems(); track item.id) {
+              <div (click)="openModal(item)" class="relative p-4 transition-all bg-white border shadow-sm cursor-pointer dark:bg-zinc-900 rounded-xl border-zinc-200 dark:border-zinc-800 hover:border-indigo-500 dark:hover:border-indigo-500 hover:shadow-md group">
+
+                <div class="flex items-start justify-between mb-3">
+                    <div class="flex items-center gap-2">
+                       <span class="px-2 py-1 font-mono text-xs font-bold rounded text-zinc-500 bg-zinc-100 dark:bg-zinc-800">
+                         #{{ item.id }}
+                       </span>
+                       <!-- Linked App Indicator (Moved here to avoid overlap) -->
+                       @if (getLinkedAppId(item.id)) {
+                           <span class="text-indigo-500" title="Linked to Project">
+                               <i class="fa-solid fa-link"></i>
+                           </span>
+                       }
+                    </div>
+
+                    <span class="px-2.5 py-1 rounded-full text-xs font-bold capitalize"
+                      [ngClass]="getStatusClass(item.state, item.type)"
+                    >
+                      {{ item.state }}
+                    </span>
+                </div>
+
+                <h3 class="mb-4 font-bold leading-tight text-zinc-800 dark:text-zinc-200 line-clamp-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
+                    {{ item.title }}
+                </h3>
+
+                <div class="flex items-center justify-between pt-3 mt-auto border-t border-zinc-100 dark:border-zinc-800">
+                    <div class="flex items-center gap-2">
+                      <div class="w-6 h-6 rounded-full bg-zinc-200 dark:bg-zinc-700 overflow-hidden flex items-center justify-center text-[10px] text-zinc-500">
+                          @if (item.avatarUrl) {
+                            <img [src]="item.avatarUrl" class="object-cover w-full h-full">
+                          } @else {
+                            <i class="fa-solid fa-user"></i>
+                          }
+                      </div>
+                      <span class="text-xs text-zinc-600 dark:text-zinc-400 truncate max-w-[120px]">{{ item.assignedTo }}</span>
+                    </div>
+                    <div class="text-xs text-zinc-400">
+                      <i class="fa-solid fa-book-open"></i> Story
+                    </div>
+                </div>
+              </div>
+          }
+        </div>
+      } @else {
+        <!-- LIST VIEW -->
+        <div class="mb-10 overflow-hidden bg-white border shadow-sm dark:bg-zinc-900 rounded-xl border-zinc-200 dark:border-zinc-800">
+           <table class="w-full text-left border-collapse">
+              <thead class="text-xs font-bold tracking-wider uppercase border-b bg-zinc-50 dark:bg-zinc-950 border-zinc-200 dark:border-zinc-800 text-zinc-500">
+                 <tr>
+                    <th class="w-20 px-6 py-4">ID</th>
+                    <th class="px-6 py-4">Title</th>
+                    <th class="hidden w-32 px-6 py-4 sm:table-cell">Status</th>
+                    <th class="hidden w-48 px-6 py-4 md:table-cell">Assigned To</th>
+                    <th class="w-20 px-6 py-4 text-center">Link</th>
+                 </tr>
+              </thead>
+              <tbody class="divide-y divide-zinc-100 dark:divide-zinc-800">
+                 @for (item of filteredWorkItems(); track item.id) {
+                    <tr (click)="openModal(item)" class="transition-colors cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-800 group">
+                       <td class="px-6 py-4 font-mono text-xs text-zinc-500">#{{ item.id }}</td>
+                       <td class="px-6 py-4">
+                          <div class="text-sm font-medium transition-colors text-zinc-800 dark:text-zinc-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 line-clamp-1">{{ item.title }}</div>
+                          <div class="mt-1 sm:hidden">
+                             <span class="px-2 py-0.5 rounded-full text-[10px] font-bold capitalize inline-block" [ngClass]="getStatusClass(item.state, item.type)">
+                                {{ item.state }}
+                             </span>
+                          </div>
+                       </td>
+                       <td class="hidden px-6 py-4 sm:table-cell">
+                          <span class="px-2.5 py-1 rounded-full text-[10px] font-bold capitalize whitespace-nowrap" [ngClass]="getStatusClass(item.state, item.type)">
+                             {{ item.state }}
+                          </span>
+                       </td>
+                       <td class="hidden px-6 py-4 md:table-cell">
+                          <div class="flex items-center gap-2">
+                             <div class="w-6 h-6 rounded-full bg-zinc-200 dark:bg-zinc-700 overflow-hidden flex items-center justify-center text-[10px] text-zinc-500 shrink-0">
+                                @if (item.avatarUrl) {
+                                  <img [src]="item.avatarUrl" class="object-cover w-full h-full">
+                                } @else {
+                                  <i class="fa-solid fa-user"></i>
+                                }
+                             </div>
+                             <span class="text-xs truncate text-zinc-600 dark:text-zinc-400">{{ item.assignedTo }}</span>
+                          </div>
+                       </td>
+                       <td class="px-6 py-4 text-center">
+                          @if (getLinkedAppId(item.id)) {
+                             <span class="text-indigo-500" title="Linked to Project">
+                                <i class="fa-solid fa-link"></i>
+                             </span>
+                          }
+                       </td>
+                    </tr>
+                 }
+              </tbody>
+           </table>
+        </div>
+      }
+  </div>
+</div>
+
+<!-- Full Screen Modal -->
+@if (currentWorkItem()) {
+  <div
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
+    [class.az-overlay-enter]="!isClosing()"
+    [class.az-overlay-exit]="isClosing()"
+  >
+    <div
+      class="bg-white dark:bg-zinc-900 w-full h-full md:w-[95%] md:h-[95%] md:rounded-xl shadow-2xl flex flex-col overflow-hidden"
+      [class.az-box-enter]="!isClosing()"
+      [class.az-box-exit]="isClosing()"
+    >
+       <!-- We use this @for loop to track ID changes and force DOM recreation for navigation animations -->
+       @for (activeItem of [currentWorkItem()]; track activeItem?.id) {
+         <div
+           class="flex flex-col w-full h-full bg-white dark:bg-zinc-900"
+           [ngClass]="getNavigationAnimationClass()"
+         >
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between px-6 py-4 border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950 shrink-0">
+                <div class="flex items-center gap-3">
+                    @if (workItemStack().length > 1) {
+                        <button
+                            (click)="popModal()"
+                            class="flex items-center gap-2 px-2 py-1 mr-2 transition-colors rounded text-zinc-600 dark:text-zinc-300 hover:text-indigo-600 dark:hover:text-indigo-400 group hover:bg-zinc-200 dark:hover:bg-zinc-800"
+                        >
+                            <i class="text-lg transition-transform fa-solid fa-arrow-left group-hover:-translate-x-1"></i>
+                            <span class="text-sm font-bold">Back to US</span>
+                        }
+
+                        <span class="px-2 py-1 font-mono text-sm font-bold rounded text-zinc-500 bg-zinc-200 dark:bg-zinc-800">#{{ activeItem?.id }}</span>
+
+                        <!-- AI Actions (Only for User Story) -->
+                        @if (activeItem?.type === 'User Story') {
+                          <ng-container>
+                            <div class="flex items-center gap-1">
+                             <button (click)="generateSummary(activeItem!)" class="flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white rounded-lg shadow text-xs font-bold transition-all hover:shadow-md" title="AI Summary">
+                               <i class="fa-solid fa-wand-magic-sparkles"></i>
+                             </button>
+                             <button (click)="generateSuggestions(activeItem!)" class="flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-500 hover:to-orange-600 text-white rounded-lg shadow text-xs font-bold transition-all hover:shadow-md" title="AI Suggestions">
+                               <i class="fa-solid fa-lightbulb"></i>
+                             </button>
+                           </div>
+                          </ng-container>
+                        }
+
+                        <!-- Project Linker (New Feature) -->
+                        <div class="relative flex items-center gap-1 ml-2">
+                            <div class="relative">
+                                <select
+                                    [ngModel]="getLinkedAppId(activeItem!.id)"
+                                    (ngModelChange)="linkProject(activeItem!.id, $event)"
+                                    class="appearance-none pl-7 pr-8 py-1.5 bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 rounded-lg text-xs font-medium text-zinc-700 dark:text-zinc-300 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors w-40 truncate"
+                                >
+                                    <option [ngValue]="null">Link Project...</option>
+                                    @for (app of appService.apps(); track app.id) {
+                                        <option [value]="app.id">{{ app.name }}</option>
+                                    }
+                                </select>
+                                <div class="absolute left-2.5 top-1/2 -translate-y-1/2 text-zinc-400 text-xs pointer-events-none">
+                                    <i class="fa-solid fa-link"></i>
+                                </div>
+                                <div class="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-400 text-[10px] pointer-events-none">
+                                    <i class="fa-solid fa-chevron-down"></i>
+                                </div>
+                            </div>
+
+                            @if (getLinkedAppId(activeItem!.id); as linkedAppId) {
+                                <button (click)="navigateToApp(linkedAppId)" class="flex items-center justify-center text-indigo-600 transition-colors bg-indigo-100 rounded-lg w-7 h-7 dark:bg-indigo-900/40 dark:text-indigo-400 hover:bg-indigo-200 dark:hover:bg-indigo-900/60" title="Open Project Dashboard">
+                                    <i class="text-xs fa-solid fa-arrow-up-right-from-square"></i>
+                                </button>
+                            }
+                        </div>
+
+                        <!-- Branch Copy Button -->
+                        <button
+                          (click)="copyBranchName(activeItem!)"
+                          class="flex items-center justify-center w-8 h-8 ml-2 transition-colors rounded-full bg-zinc-200 dark:bg-zinc-800 hover:bg-zinc-300 dark:hover:bg-zinc-700"
+                          [class.text-green-600]="copiedBranchId() === activeItem?.id"
+                          [class.dark:text-green-400]="copiedBranchId() === activeItem?.id"
+                          [class.text-zinc-500]="copiedBranchId() !== activeItem?.id"
+                          title="Copy Branch Name"
+                        >
+                          @if (copiedBranchId() === activeItem?.id) {
+                             <i class="text-sm fa-solid fa-check"></i>
+                          } @else {
+                             <i class="text-sm fa-solid fa-code-branch"></i>
+                          }
+                        </button>
+
+                        <!-- Editable Status Badge -->
+                        <div class="relative group">
+                             <select
+                                [ngModel]="activeItem?.state"
+                                (ngModelChange)="updateStatus(activeItem!, $event)"
+                                class="py-1 pl-3 pr-6 text-xs font-bold capitalize rounded-full appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-indigo-500"
+                                [ngClass]="getStatusClass(activeItem?.state ||
+  tns , activeItem?.type ||
+  tns )"
+                            >
+                                @for (status of getPossibleStatuses(activeItem?.type); track status) {
+                                    <option [value]="status" class="bg-white text-zinc-800 dark:bg-zinc-900 dark:text-zinc-200">{{ status }}</option>
+                                }
+                            </select>
+                             <div class="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-[10px] text-zinc-600 dark:text-zinc-400">
+                                <i class="fa-solid fa-chevron-down"></i>
+                             </div>
+                        </div>
+
+                        <div class="items-center hidden gap-2 sm:flex">
+                            <div class="w-6 h-6 rounded-full bg-zinc-200 dark:bg-zinc-700 overflow-hidden flex items-center justify-center text-[10px] text-zinc-500">
+                                @if (activeItem?.avatarUrl) {
+                                <img [src]="activeItem?.avatarUrl" class="object-cover w-full h-full">
+                                } @else {
+                                <i class="fa-solid fa-user"></i>
+                                }
+                            </div>
+                            <span class="text-sm text-zinc-600 dark:text-zinc-400">{{ activeItem?.assignedTo }}</span>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                        <!-- Delete Button (Only for Task/Bug) -->
+                        @if (activeItem?.type !== 'User Story') {
+                           <button (click)="requestDelete(activeItem!)" class="p-2 transition-colors rounded-lg text-zinc-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20" title="Delete Item">
+                               <i class="text-lg fa-solid fa-trash-can"></i>
+                           </button>
+                        }
+
+                        <button (click)="closeModal()" class="p-2 transition-colors rounded-lg text-zinc-400 hover:text-zinc-700 dark:hover:text-white hover:bg-zinc-200 dark:hover:bg-zinc-800">
+                            <i class="text-2xl fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Modal Body -->
+                <div class="flex flex-col flex-1 overflow-hidden md:flex-row">
+
+                    <!-- Left: Description (Editable) -->
+                    <div class="flex-1 p-6 overflow-y-auto bg-white border-r custom-scrollbar border-zinc-200 dark:border-zinc-800 dark:bg-zinc-900">
+                        <div class="flex items-center gap-2 mb-4">
+                            @if (activeItem?.type === 'User Story') {
+                            <span class="bg-blue-100 text-blue-700 text-xs px-2 py-0.5 rounded font-bold uppercase"><i class="mr-1 fa-solid fa-book-open"></i> User Story</span>
+                            } @else if (activeItem?.type === 'Task') {
+                            <span class="bg-yellow-100 text-yellow-700 text-xs px-2 py-0.5 rounded font-bold uppercase"><i class="mr-1 fa-solid fa-check-square"></i> Task</span>
+                            } @else if (activeItem?.type === 'Bug') {
+                            <span class="bg-red-100 text-red-700 text-xs px-2 py-0.5 rounded font-bold uppercase"><i class="mr-1 fa-solid fa-bug"></i> Bug</span>
+                            }
+                            @else {
+                            <span class="bg-zinc-100 text-zinc-700 text-xs px-2 py-0.5 rounded font-bold uppercase">{{ activeItem?.type }}</span>
+                            }
+                        </div>
+
+                        <!-- Editable Title -->
+                        @if(isEditingTitle()) {
+                            <div class="flex items-center gap-2 mb-6">
+                                <input
+                                    [(ngModel)]="tempTitle"
+                                    class="w-full text-2xl font-bold bg-transparent border-b-2 border-indigo-500 text-zinc-800 dark:text-white focus:outline-none"
+                                    (keydown.enter)="saveTitle(activeItem!)"
+                                    autoFocus
+                                >
+                                <button (click)="saveTitle(activeItem!)" class="p-2 text-green-500 rounded hover:bg-green-100 dark:hover:bg-green-900/30">
+                                    <i class="fa-solid fa-check"></i>
+                                </button>
+                                <button (click)="isEditingTitle.set(false)" class="p-2 text-red-500 rounded hover:bg-red-100 dark:hover:bg-red-900/30">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </button>
+                            </div>
+                        }
+                        @else {
+                            <h2 class="flex items-start gap-2 mb-6 text-2xl font-bold leading-tight text-zinc-800 dark:text-white group/title">
+                                {{ activeItem?.title }}
+                                <button (click)="startEditTitle(activeItem!)" class="mt-1 text-sm transition-opacity opacity-0 group-hover/title:opacity-100 text-zinc-400 hover:text-indigo-500">
+                                    <i class="fa-solid fa-pencil"></i>
+                                </button>
+                            </h2>
+                        }
+
+                        <div class="relative prose dark:prose-invert max-w-none group/desc">
+                            <div class="flex items-center justify-between mb-2">
+                                <h3 class="text-sm font-bold tracking-wider uppercase text-zinc-500">Description</h3>
+                                @if(!isEditingDesc()) {
+                                    <button (click)="startEditDesc(activeItem!)" class="text-xs font-medium text-indigo-600 transition-opacity opacity-0 dark:text-indigo-400 hover:underline group-hover/desc:opacity-100">
+                                        Edit Description
+                                    </button>
+                                }
+                            }
+
+                            @if(isEditingDesc()) {
+                                <div class="flex flex-col gap-2">
+                                    <textarea
+                                        [(ngModel)]="tempDesc"
+                                        class="w-full h-64 p-3 font-mono text-sm border rounded-lg border-zinc-300 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-950 text-zinc-800 dark:text-zinc-200 focus:outline-none focus:border-indigo-500"
+                                        placeholder="Description (HTML supported)..."
+                                    ></textarea>
+                                    <div class="flex justify-end gap-2">
+                                        <button (click)="isEditingDesc.set(false)" class="px-3 py-1.5 text-xs font-bold text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded">Cancel</button>
+                                        <button (click)="saveDesc(activeItem!)" class="px-3 py-1.5 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded">Save</button>
+                                    </div>
+                                </div>
+                            }
+                            @else {
+                                <div [innerHTML]="activeItem?.description" class="text-zinc-700 dark:text-zinc-300"></div>
+                            }
+                        </div>
+                    </div>
+
+                    <!-- Right: Tasks & Bugs -->
+                    <div class="flex flex-col w-full border-l md:w-96 bg-zinc-50 dark:bg-zinc-950 border-zinc-200 dark:border-zinc-800">
+                        <div class="flex items-center justify-between p-4 font-bold border-b border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300">
+                            <span>Related Items / Children</span>
+
+                            <!-- Add Child Button (Only if US) -->
+                            @if (activeItem?.type === 'User Story') {
+                                <button (click)="isCreatingChild.set(true)" class="px-2 py-1 text-xs text-white transition-colors bg-indigo-600 rounded shadow-sm hover:bg-indigo-700">
+                                    <i class="mr-1 fa-solid fa-plus"></i> Add Item
+                                </button>
+                            }
+                            @else {
+                                <a [href]="activeItem?.url" target="_blank" class="text-xs text-indigo-600 hover:underline">
+                                    Open in Azure <i class="ml-1 fa-solid fa-external-link-alt"></i>
+                                </a>
+                            }
+                        </div>
+
+                        <!-- Add Item Form -->
+                        @if (isCreatingChild()) {
+                            <div class="p-3 bg-white border-b dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 animate-in slide-in-from-top-2">
+                                <div class="flex gap-2 mb-2">
+                                    <select [(ngModel)]="newChildType" class="text-xs border border-zinc-300 dark:border-zinc-700 rounded p-1.5 bg-zinc-50 dark:bg-zinc-800 dark:text-white focus:outline-none">
+                                        <option value="Task">Task</option>
+                                        <option value="Bug">Bug</option>
+                                    </select>
+                                    <input
+                                        [(ngModel)]="newChildTitle"
+                                        placeholder="Title..."
+                                        class="flex-1 text-xs border border-zinc-300 dark:border-zinc-700 rounded p-1.5 bg-zinc-50 dark:bg-zinc-800 dark:text-white focus:outline-none focus:border-indigo-500"
+                                        (keydown.enter)="createChild(activeItem!.id)"
+                                    >
+                                </div>
+                                <div class="flex justify-end gap-2">
+                                    <button (click)="isCreatingChild.set(false)" class="text-xs text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200">Cancel</button>
+                                    <button
+                                        (click)="createChild(activeItem!.id)"
+                                        [disabled]="!newChildTitle"
+                                        class="px-2 py-1 text-xs text-white bg-green-600 rounded hover:bg-green-700 disabled:opacity-50"
+                                    >
+                                        Create
+                                    </button>
+                                </div>
+                            </div>
+                        }
+
+                        <div class="flex-1 p-4 space-y-3 overflow-y-auto custom-scrollbar">
+                            @if (appService.isLoadingChildren()) {
+                            <div class="flex items-center justify-center py-10 text-zinc-400">
+                                <i class="text-2xl fa-solid fa-circle-notch fa-spin"></i>
+                            </div>
+                            }
+                            @else if (appService.azureChildrenItems().length === 0) {
+                            <div class="py-10 text-sm italic text-center text-zinc-400">
+                                No children linked to this item.
+                            </div>
+                            }
+                            @else {
+                            @for (child of appService.azureChildrenItems(); track child.id) {
+                                <div (click)="navigateToChild(child.id)"
+                                    class="p-3 transition-all bg-white border rounded-lg shadow-sm cursor-pointer dark:bg-zinc-900 hover:shadow-md hover:border-indigo-400 dark:hover:border-indigo-500 group"
+                                    [class.border-l-4]="true"
+                                    [class.border-l-yellow-400]="child.type === 'Task'"
+                                    [class.border-l-red-500]="child.type === 'Bug'"
+                                    [class.border-zinc-200]="true"
+                                    [class.dark:border-zinc-800]="true"
+                                >
+                                    <div class="flex items-start justify-between mb-1">
+                                    <div class="flex items-center gap-2">
+                                        @if (child.type === 'Bug') {
+                                            <i class="text-xs text-red-500 fa-solid fa-bug"></i>
+                                        }
+                                        @else {
+                                            <i class="text-xs text-yellow-500 fa-solid fa-check-square"></i>
+                                        }
+                                        <span class="font-mono text-xs text-zinc-500">#{{ child.id }}</span>
+                                    </div>
+                                    <span class="text-[10px] px-1.5 py-0.5 rounded font-bold uppercase"
+                                        [ngClass]="getStatusClass(child.state, child.type)"
+                                    >
+                                        {{ child.state }}
+                                    </span>
+                                    </div>
+                                    <div class="mb-2 text-sm font-medium leading-snug text-zinc-800 dark:text-zinc-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
+                                    {{ child.title }}
+                                    </div>
+                                    <div class="flex items-center justify-between mt-2">
+                                        <div class="w-5 h-5 rounded-full bg-zinc-200 dark:bg-zinc-700 overflow-hidden flex items-center justify-center text-[8px] text-zinc-500">
+                                            @if (child.avatarUrl) {
+                                                <img [src]="child.avatarUrl" class="object-cover w-full h-full">
+                                            }
+                                            @else {
+                                                <i class="fa-solid fa-user"></i>
+                                            }
+                                        </div>
+                                        <span class="text-xs text-zinc-500">{{ child.assignedTo }}</span>
+                                    </div>
+                                    @if (child.completedWork) {
+                                        <span class="text-[10px] bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 px-1.5 py-0.5 rounded font-mono font-bold flex items-center gap-1">
+                                            <i class="fa-regular fa-clock"></i> {{ child.completedWork }}h
+                                        </span>
+                                    }
+                                </div>
+                            }
+                            }
+                        </div>
+                    </div>
+                </div>
+             </div>
+           }
+        </div>
+      </div>
+    }
+
+    <!-- AI Summary Modal -->
+    @if (activeAIModal() === 'summary') {
+      <div class="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 backdrop-blur-sm animate-in fade-in">
+         <div class="relative w-full max-w-lg p-6 overflow-hidden scale-100 bg-white border border-purple-200 shadow-2xl dark:bg-zinc-900 rounded-xl dark:border-purple-900/50 animate-in zoom-in-95">
+            <!-- Decorative BG -->
+            <div class="absolute w-32 h-32 rounded-full pointer-events-none -top-10 -right-10 bg-purple-500/10 blur-3xl"></div>
+
+            <div class="flex items-center gap-3 mb-4">
+              <div class="flex items-center justify-center w-10 h-10 text-lg text-white rounded-full shadow-lg bg-gradient-to-br from-purple-500 to-indigo-500 shadow-purple-500/30">
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+              </div>
+              <h3 class="text-xl font-bold text-zinc-800 dark:text-white">AI Summary</h3>
+              <button (click)="closeAIModal()" class="ml-auto text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200">
+                <i class="text-xl fa-solid fa-xmark"></i>
+              </button>
+            </div>
+
+            @if (isLoadingAI()) {
+               <div class="flex flex-col items-center py-8 text-zinc-500 animate-pulse">
+                  <i class="mb-3 text-3xl text-purple-500 fa-solid fa-circle-notch fa-spin"></i>
+                  <p>Analyzing User Story...</p>
+               </div>
+            }
+            @else {
+               <div class="p-4 text-sm leading-relaxed border rounded-lg bg-zinc-50 dark:bg-zinc-950 border-zinc-100 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300">
+                 {{ aiResultText() }}
+               </div>
+               <div class="flex justify-end mt-4">
+                 <button (click)="closeAIModal()" class="px-4 py-2 text-sm font-bold text-purple-700 transition-colors bg-purple-100 rounded-lg hover:bg-purple-200 dark:bg-purple-900/20 dark:text-purple-300 dark:hover:bg-purple-900/40">
+                   Close
+                 </button>
+               </div>
+            }
+         </div>
+      </div>
+    }
+
+    <!-- AI Suggestions Modal -->
+    @if (activeAIModal() === 'suggestions') {
+      <div class="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 backdrop-blur-sm animate-in fade-in">
+         <div class="bg-white dark:bg-zinc-900 rounded-xl shadow-2xl p-6 max-w-2xl w-full border border-orange-200 dark:border-orange-900/50 scale-100 animate-in zoom-in-95 relative overflow-hidden max-h-[80vh] flex flex-col">
+            <!-- Decorative BG -->
+            <div class="absolute w-32 h-32 rounded-full pointer-events-none -top-10 -right-10 bg-orange-500/10 blur-3xl"></div>
+
+            <div class="flex items-center gap-3 mb-4 shrink-0">
+              <div class="flex items-center justify-center w-10 h-10 text-lg text-white rounded-full shadow-lg bg-gradient-to-br from-amber-400 to-orange-500 shadow-orange-500/30">
+                <i class="fa-solid fa-lightbulb"></i>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold text-zinc-800 dark:text-white">AI Task Suggestions</h3>
+                <p class="text-xs text-zinc-500 dark:text-zinc-400">Based on the User Story description</p>
+              </div>
+              <button (click)="closeAIModal()" class="ml-auto text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200">
+                <i class="text-xl fa-solid fa-xmark"></i>
+              </button>
+            </div>
+
+            @if (isLoadingAI()) {
+               <div class="flex flex-col items-center justify-center flex-1 py-12 text-zinc-500 animate-pulse">
+                  <i class="mb-3 text-3xl text-orange-500 fa-solid fa-gear fa-spin"></i>
+                  <p>Generating tasks & bugs...</p>
+               </div>
+            }
+            @else {
+               <div class="flex-1 pr-2 space-y-3 overflow-y-auto custom-scrollbar">
+                 @for (sug of aiSuggestions(); track sug.title) {
+                   <div class="flex items-start gap-3 p-3 transition-colors border rounded-lg border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 group">
+                     <div class="mt-0.5">
+                       @if(sug.type === 'Bug') {
+                         <i class="text-red-500 fa-solid fa-bug"></i>
+                       }
+                       @else {
+                         <i class="text-yellow-500 fa-solid fa-check-square"></i>
+                       }
+                     </div>
+                     <div class="flex-1">
+                        <div class="text-sm font-bold text-zinc-800 dark:text-white">{{ sug.title }}</div>
+                        <div class="text-xs text-zinc-500 uppercase font-bold mt-0.5">{{ sug.type }}</div>
+                     </div>
+                     <button (click)="acceptSuggestion(sug)" class="px-3 py-1.5 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 text-xs font-bold rounded hover:opacity-80 transition-opacity opacity-0 group-hover:opacity-100">
+                       <i class="mr-1 fa-solid fa-plus"></i> Create
+                     </button>
+                   </div>
+                 }
+                 @if (aiSuggestions().length === 0) {
+                   <div class="py-8 text-center text-zinc-400">
+                     <i class="mb-2 text-2xl text-green-500 fa-solid fa-check-circle"></i>
+                     <p>All suggestions created!</p>
+                   </div>
+                 }
+               </div>
+
+               <div class="flex justify-end pt-4 mt-4 border-t border-zinc-100 dark:border-zinc-800 shrink-0">
+                 <button (click)="closeAIModal()" class="px-4 py-2 text-sm font-medium text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200">
+                   Done
+                 </button>
+               </div>
+            }
+         </div>
+      </div>
+    }
+
+    <!-- Delete Confirmation Modal -->
+    @if (itemToDelete()) {
+      <div class="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 backdrop-blur-sm animate-in fade-in">
+        <div class="w-full max-w-sm p-6 scale-100 bg-white border shadow-2xl dark:bg-zinc-900 rounded-xl border-zinc-200 dark:border-zinc-800 animate-in zoom-in-95">
+          <h3 class="mb-2 text-lg font-bold text-zinc-800 dark:text-white">Confirm Deletion</h3>
+          <p class="mb-6 text-sm text-zinc-600 dark:text-zinc-400">
+            Are you sure you want to delete <span class="font-bold">{{ itemToDelete()?.type }} #{{ itemToDelete()?.id }}</span>?
+            This action cannot be undone.
+          </p>
+          <div class="flex justify-end gap-3">
+            <button
+              (click)="cancelDelete()"
+              class="px-4 py-2 text-sm font-medium transition-colors rounded-lg text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+              [disabled]="isDeleting()"
+            >
+              Cancel
+            </button>
+            <button
+              (click)="performDelete()"
+              class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white transition-colors bg-red-600 rounded-lg hover:bg-red-700"
+              [disabled]="isDeleting()"
+            >
+              @if (isDeleting()) {
+                <i class="fa-solid fa-circle-notch fa-spin"></i>
+              }
+              @else {
+                <i class="fa-solid fa-trash-can"></i>
+              }
+              Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    }

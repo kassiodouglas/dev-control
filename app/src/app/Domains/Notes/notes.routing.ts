@@ -1,9 +1,9 @@
 import { Routes } from '@angular/router';
-import { GlobalNotesPage } from './Pages/global-notes/global-notes.page';
+import { NotesPagePage } from './Pages/notes-page/notes-page.page'; // Correct import
 
 export const notesRoutes: Routes = [
   {
     path: '',
-    component: GlobalNotesPage,
+    component: NotesPagePage, // Correct component
   },
 ];

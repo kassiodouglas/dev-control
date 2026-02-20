@@ -1,0 +1,105 @@
+<div class="flex h-full transition-colors bg-zinc-100 dark:bg-zinc-950">
+  <!-- Notes Sidebar -->
+  <div class="flex flex-col h-full transition-colors bg-white border-r w-72 dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800">
+    <div class="flex items-center justify-between p-4 border-b border-zinc-200 dark:border-zinc-800">
+      <h2 class="font-bold text-zinc-700 dark:text-zinc-200">My Notes</h2>
+      <button (click)="createNote()" class="text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 p-1.5 rounded-md transition-colors">
+        <i class="fa-solid fa-plus"></i>
+      </button>
+    </div>
+
+    <div class="flex-1 p-2 space-y-1 overflow-y-auto">
+      @for (note of appService.globalNotes(); track note.id) {
+        <div
+          (click)="selectNote(note.id)"
+          class="p-3 transition-all border rounded-lg cursor-pointer group"
+          [class.bg-indigo-50]="selectedNoteId() === note.id"
+          [class.dark:bg-indigo-900]="selectedNoteId() === note.id"
+          [class.bg-opacity-30]="selectedNoteId() === note.id"
+          [class.border-indigo-200]="selectedNoteId() === note.id"
+          [class.dark:border-indigo-800]="selectedNoteId() === note.id"
+          [class.border-transparent]="selectedNoteId() !== note.id"
+          [class.hover:bg-zinc-50]="selectedNoteId() !== note.id"
+          [class.dark:hover:bg-zinc-800]="selectedNoteId() !== note.id"
+        >
+          <div class="text-sm font-semibold truncate text-zinc-800 dark:text-zinc-200">{{ note.title || 'Untitled' }}</div>
+          <div class="flex items-center justify-between mt-1 text-xs text-zinc-500 dark:text-zinc-400">
+            <span>{{ note.updatedAt | date:'MMM d, HH:mm' }}</span>
+            <button (click)="deleteNote($event, note.id)" class="p-1 transition-colors opacity-0 group-hover:opacity-100 text-zinc-400 hover:text-red-500">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Editor Area -->
+  <div class="flex flex-col flex-1 h-full overflow-hidden transition-colors bg-white dark:bg-zinc-900">
+    @if (activeNote(); as note) {
+      <div class="flex flex-col w-full h-full max-w-4xl p-6 mx-auto">
+        <input
+          [ngModel]="note.title"
+          (ngModelChange)="updateTitle(note.id, $event)"
+          placeholder="Note Title"
+          class="w-full px-0 mb-4 text-3xl font-bold transition-colors bg-white border-none text-zinc-800 dark:text-white dark:bg-zinc-900 placeholder-zinc-300 dark:placeholder-zinc-600 focus:ring-0"
+        >
+
+        <!-- Editor/Preview Toggle Container -->
+        <div class="relative flex flex-col flex-1 overflow-hidden transition-colors bg-white border shadow-sm border-zinc-200 dark:border-zinc-700 rounded-xl dark:bg-zinc-900">
+
+          <!-- Toolbar -->
+          <div class="flex items-center justify-between px-4 py-2 transition-colors border-b bg-zinc-50 dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700">
+            <span class="text-xs font-medium tracking-wider text-zinc-500 dark:text-zinc-400">
+              {{ isPreview() ? 'PREVIEW MODE' : 'MARKDOWN EDITOR' }}
+            </span>
+
+            <button
+              (click)="togglePreview()"
+              class="text-xs font-semibold px-3 py-1.5 rounded-md transition-all flex items-center gap-2"
+              [class.bg-indigo-100]="isPreview()"
+              [class.text-indigo-700]="isPreview()"
+              [class.dark:bg-indigo-900]="isPreview()"
+              [class.dark:text-indigo-300]="isPreview()"
+              [class.bg-white]="!isPreview()"
+              [class.text-zinc-600]="!isPreview()"
+              [class.dark:bg-zinc-700]="!isPreview()"
+              [class.dark:text-zinc-300]="!isPreview()"
+              [class.border]="!isPreview()"
+              [class.border-zinc-300]="!isPreview()"
+              [class.dark:border-zinc-600]="!isPreview()"
+            >
+              @if (isPreview()) {
+                <i class="fa-solid fa-pen"></i> Edit
+              } @else {
+                <i class="fa-solid fa-eye"></i> Preview
+              }
+            </button>
+          </div>
+
+          <!-- Content Area -->
+          <div class="relative flex-1 overflow-hidden">
+            @if (isPreview()) {
+              <div
+                class="absolute inset-0 p-6 overflow-y-auto leading-relaxed prose dark:prose-invert max-w-none text-zinc-800 dark:text-zinc-200"
+                [innerHTML]="parsedContent()"
+              ></div>
+            } @else {
+              <textarea
+                [ngModel]="note.content"
+                (ngModelChange)="updateContent(note.id, $event)"
+                class="w-full h-full p-6 font-mono text-sm leading-relaxed transition-colors bg-white resize-none focus:outline-none text-zinc-800 dark:text-zinc-200 dark:bg-zinc-900"
+                placeholder="Start typing your note here... Markdown is supported (# for titles, **bold**, - lists)"
+              ></textarea>
+            }
+          </div>
+        </div>
+      </div>
+    } @else {
+      <div class="flex flex-col items-center justify-center flex-1 text-zinc-300 dark:text-zinc-600">
+        <i class="mb-4 text-6xl fa-regular fa-note-sticky"></i>
+        <p class="text-lg">Select a note or create a new one.</p>
+      </div>
+    }
+  </div>
+</div>
